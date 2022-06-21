@@ -1,5 +1,5 @@
-#ifndef PARSER_CPP_
-#define PARSER_CPP_ 1
+#ifndef PARSELIB_CPP_
+#define PARSELIB_CPP_ 1
 
 #include <iostream>
 #include <fstream>
