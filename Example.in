@@ -1,0 +1,31 @@
+#######################################
+#######################################
+#######################################
+#       EXAMPLE INPUT FILE            #
+#######################################
+#######################################
+#######################################
+TIMESCHEME EULER
+MODE 1
+CASE SHOCKTUBE
+
+#Switches
+FASTMODE  TRUE
+GHOSTCALC TRUE
+AVSTATE   FALSE
+DEBUG     FALSE
+
+TMX 10.01
+XMN -1.0
+XMX 1.0
+NCELL 250 #CB point: 500 #BB point: 250 #AB point: 150
+
+#Optimization limits
+NLAMLIM 1e-24
+GRADLIM 1e-6
+
+#Modifications
+WVXFACTOR 1.15 #CB point: 1.08
+
+#unused
+ITOL 1e-12
