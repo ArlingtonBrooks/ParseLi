@@ -1,5 +1,5 @@
-#ifndef DICT_HPP_
-#define DICT_HPP_ 1
+#ifndef PARSELIB_HPP_
+#define PARSELIB_HPP_ 1
 
 #include <string>
 #include <unordered_map> //std::unordered_map
