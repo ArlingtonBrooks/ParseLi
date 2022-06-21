@@ -1,5 +1,8 @@
 # ParseLi
-ParseLi is a library for parsing "input files".  These input files can be theoretically for anything, however must contain some of the following elements: 
+ParseLi is a library for parsing "input files".  These input files can be theoretically for anything, or you can leave the input file blank and specify variables using a dictionary object.
+
+### EXAMPLE INPUT FILE
+In the top level directory is a working example input file `Example.in`. 
 
 ### COMMENTS
 A comment line is any line starting with a '#'.  You should be able to write whatever you want in a comment line, the parser will simply ignore it. <br>
