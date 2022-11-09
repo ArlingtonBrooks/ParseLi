@@ -8,6 +8,7 @@ $(Target): $(Target).cpp
 	mkdir BUILD
 	$(CXX) $(CXXFLAGS) $(Target).cpp -o $(Target).o
 	$(CXX) $(LIBFLAGS) -o lib$(Target).so $(Target).o
+	mv lib$(Target).so BUILD/
 
 clean:
 	rm -rf BUILD/
