@@ -42,6 +42,10 @@ class Dict
     double GetDouble(std::string key);
     int GetInt(std::string key);
     std::string GetString(std::string key);
+    
+    bool CheckDouble(std::string key);
+    bool CheckInt(std::string key);
+    bool CheckString(std::string key);
 
     void Dump();
 };

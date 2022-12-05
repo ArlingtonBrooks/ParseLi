@@ -90,6 +90,39 @@ std::string Dict::GetString(std::string key)
     return ret;
 }
 
+//Check if a double exists; return true if it does
+bool Dict::CheckDouble(std::string key)
+{
+    try {
+        DoubleMap.at(key);
+        return true;
+    } catch (const std::out_of_range& e){
+        return false;
+    }
+}
+
+//Check if an int exists; return true if it does
+bool Dict::CheckInt(std::string key)
+{
+    try {
+        IntMap.at(key);
+        return true;
+    } catch (const std::out_of_range& e){
+        return false;
+    }
+}
+
+//Check if a string exists; return true if it does
+bool Dict::CheckString(std::string key)
+{
+    try {
+        StringMap.at(key);
+        return true;
+    } catch (const std::out_of_range& e){
+        return false;
+    }
+}
+
 //Printout all values from the dictionary
 void Dict::Dump()
 {
