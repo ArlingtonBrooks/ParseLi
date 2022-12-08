@@ -221,7 +221,7 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false)
             VarName += LineData[siter];
             siter++;
             if (LineData[siter] == '\0') {
-                fprintf(stderr,"Reached end of line while parsing config file (line %d)\n",iter);
+                fprintf(stderr,"Reached end of line while parsing config file (line %d)\n",ln);
                 f_in.close();
                 return false;
             }
@@ -233,6 +233,14 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false)
         while (LineData[siter] != '\n' && LineData[siter] != '\t' && LineData[siter] != '#' && LineData[siter] != '\0' && LineData[siter] != ' ') {
             VarVal += LineData[siter];
             siter++;
+        }
+        if (VarName.compare("include") == 0) {
+            if (VarVal.compare(filename) == 0) {
+                fprintf(stderr,"Error in file include: Filename %s cannot include itself (line %d)\n",VarVal.c_str(),ln);
+                continue;
+            }
+            ReadConfig(VarVal.c_str(),D,DEBUG);
+            continue;
         }
         //Try to figure out what kind of variable this is (all #s = int, #s with a decimal = double, any characters at all = string)
         //  In the future, this may parse for units also.
@@ -292,7 +300,8 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false)
                 fprintf(stderr,"Int added: %s:\t%s\n",VarName.c_str(),VarVal.c_str());
         }
     }
-
+    if (DEBUG)
+        fprintf(stderr,"Closed %s for input\n",filename);
     f_in.close();
     return true;
 };
