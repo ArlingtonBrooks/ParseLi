@@ -21,8 +21,6 @@
 #include <string>
 #include <unordered_map> //std::unordered_map
 
-extern "C" {
-
 /*
 Dictionary class
     Makes loading values from a config file easier
@@ -52,6 +50,5 @@ class Dict
 
 //extern "C" bool ReadConfig(const char* filename, Dict* D);
 bool ReadConfig(const char* filename, Dict* D, bool DEBUG);
-}
 
 #endif

@@ -9,6 +9,13 @@ TIMESCHEME EULER
 MODE 1
 CASE SHOCKTUBE
 
+#Enforcement requires 3 terms:
+#1) the 'enforce' keyword
+#2) the property being enforced
+#3) what value is being enforced
+enforce BOUNDARIES FREE
+include Vacuum.in
+
 #Switches
 FASTMODE  TRUE
 GHOSTCALC TRUE

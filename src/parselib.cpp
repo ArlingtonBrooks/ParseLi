@@ -234,6 +234,7 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false)
             VarVal += LineData[siter];
             siter++;
         }
+        //Include handler
         if (VarName.compare("include") == 0) {
             if (VarVal.compare(filename) == 0) {
                 fprintf(stderr,"Error in file include: Filename %s cannot include itself (line %d)\n",VarVal.c_str(),ln);
@@ -241,6 +242,30 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false)
             }
             ReadConfig(VarVal.c_str(),D,DEBUG);
             continue;
+        }
+        //Enforcement handler
+        if (VarName.compare("enforce") == 0) {
+            siter++;
+            std::string Enforcer = VarVal;
+            std::string EnforceVal;
+            if (D->CheckString(Enforcer)) { //If enforcing a value, check if it is identical
+                while (LineData[siter] != '\n' && LineData[siter] != '\t' && LineData[siter] != '#' && LineData[siter] != '\0' && LineData[siter] != ' ') {
+                    EnforceVal += LineData[siter];
+                    siter++;
+                }
+                if (EnforceVal.compare(D->GetString(Enforcer)) != 0) {
+                    fprintf(stderr,"Error enforcing %s in filename %s: value mismatch (%s vs %s)\n",Enforcer.c_str(),filename,EnforceVal.c_str(),D->GetString(Enforcer).c_str());
+                    throw 1;
+                }
+                continue;
+            } else {
+                while (LineData[siter] != '\n' && LineData[siter] != '\t' && LineData[siter] != '#' && LineData[siter] != '\0' && LineData[siter] != ' ') {
+                    EnforceVal += LineData[siter];
+                    siter++;
+                }
+                D->add(Enforcer,EnforceVal);
+                continue;
+            }
         }
         //Try to figure out what kind of variable this is (all #s = int, #s with a decimal = double, any characters at all = string)
         //  In the future, this may parse for units also.
