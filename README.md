@@ -34,6 +34,20 @@ Example: <br>
 
 Both of the above formats are accepted and will return the expected result.  Note that string values may not cross multiple lines. 
 
+### INCLUDING OTHER INPUT FILES
+Using the `include` keyword, you can specify a filename to be loaded in addition to the file currently being loaded.  When the `include` keyword is processed, processing of the current file pauses until the `include`d file has been loaded. <br>
+Example: <br>
+>    include Somefile
+
+Note that the filename must not contain any spaces.
+
+### ENFORCING A VALUE
+In tandem with `include`, there is a keyword for `enforce` so that `include`d files can be made to match certain parameters.  This is especially useful if an `include`d file only applies to certain conditions on the selected input file and any other condition will cause problems.  <br>
+Using `enforce` creates a string type object, so if you intend to enforce a `double`, it must be specified twice: once as a double, and once as an `enforce`.  The same applies to integers.  <br>
+Example: <br>
+>    enforce SomeImportantProperty1 5 #this will not create an integer object
+>    enforce SomeImportantProperty2 SomeString
+
 # FORMATTING TIPS
 The formatting is mostly up to you, however you **should avoid leaving comments on the same line as variables** to avoid that variable being incorrectly written or mistakenly set as the wrong type.  
 
