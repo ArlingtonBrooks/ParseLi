@@ -15,13 +15,13 @@ The above line will leave a comment in your input file which will not be parsed.
 An integer is any number without a decimal point. <br>
 Example: <br>
 >    SOMEINT 1
->    
+
 The above line will create a variable named "SOMEINT" with a value of 1.
 
 ### DOUBLES
 A double is a number with a decimal place.  ParseLi stores numbers with decimal points via the `double` C++ type (i.e. a double-precision floating point number).  <br>
 Example: <br>
->    SOMEFLOAT 1.0
+>    SOMEFLOAT 1.0 <br>
 >    AnotherFloat 1.0e-5
 
 Both of the above formats are accepted and will return the expected result.  
@@ -29,7 +29,7 @@ Both of the above formats are accepted and will return the expected result.
 ### STRINGS
 A string is a collection of characters in some order.  ParseLi stores this with the standard C++ `string` type.  <br>
 Example: <br>
->    SOMESTRING Something
+>    SOMESTRING Something <br>
 >    ANOTHERSTRING Something Else
 
 Both of the above formats are accepted and will return the expected result.  Note that string values may not cross multiple lines. 
@@ -45,7 +45,7 @@ Note that the filename must not contain any spaces.
 In tandem with `include`, there is a keyword for `enforce` so that `include`d files can be made to match certain parameters.  This is especially useful if an `include`d file only applies to certain conditions on the selected input file and any other condition will cause problems.  <br>
 Using `enforce` creates a string type object, so if you intend to enforce a `double`, it must be specified twice: once as a double, and once as an `enforce`.  The same applies to integers.  <br>
 Example: <br>
->    enforce SomeImportantProperty1 5 #this will not create an integer object
+>    enforce SomeImportantProperty1 5 #this will not create an integer object <br>
 >    enforce SomeImportantProperty2 SomeString
 
 # FORMATTING TIPS
