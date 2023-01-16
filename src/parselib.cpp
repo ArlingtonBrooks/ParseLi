@@ -24,12 +24,6 @@
 #include <string>
 #include "parselib.hpp" //Dict
 
-/*
-Dictionary class
-    Makes loading values from a config file easier
-    (Access by "key" names which return associated values)
-*/
-
 //Add 'double' to dictionary
 bool Dict::add(std::string Key, double value)
 {

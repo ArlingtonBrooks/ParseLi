@@ -1,5 +1,5 @@
 # ParseLi
-ParseLi is a library for parsing "input files".  These input files can be theoretically for anything, or you can leave the input file blank and specify variables using a dictionary object.
+ParseLi is a library for parsing "input files".  These input files can be theoretically for anything, or you can leave the input file blank and specify variables using a dictionary object.  An input file is loaded using the provided ReadConfig() function.  
 
 ### EXAMPLE INPUT FILE
 In the top level directory is a working example input file `Example.in`. 
@@ -61,6 +61,6 @@ If you want to add values to your dictionary which weren't previously defined, y
 When defining a custom value to add, it is possible to specify the variable name with a space (for example: `MY VARIABLE`), however this is bad practise.  
 
 # READING VALUES FROM DICTIONARY
-To return a value from the dictionary object, simply call either `GetDouble`, `GetInt`, or `GetString` (depending on what you are trying to get).  
+To return a value from the dictionary object, simply call either `Dict::GetDouble`, `Dict::GetInt`, or `Dict::GetString` (depending on what you are trying to get).  
 Note that you must supply a key which matches exactly the variable definition from your input file.  
 If ParseLi cannot find the value for the corresponding key, it will throw an exception notifying you of the error.  

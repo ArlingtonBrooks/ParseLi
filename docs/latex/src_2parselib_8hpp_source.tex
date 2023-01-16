@@ -1,0 +1,54 @@
+\hypertarget{src_2parselib_8hpp_source}{}\doxysection{parselib.\+hpp}
+\label{src_2parselib_8hpp_source}\index{src/parselib.hpp@{src/parselib.hpp}}
+\mbox{\hyperlink{src_2parselib_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ \ \ Copyright\ (C)\ 2019-\/2022\ \ ArlingtonBrooks}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ \ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ \ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ \ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ \ \ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ PARSELIB\_HPP\_}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ PARSELIB\_HPP\_\ 1}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <unordered\_map>}\ \textcolor{comment}{//std::unordered\_map}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDict}{Dict}}}
+\DoxyCodeLine{00038\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ std::unordered\_map<std::string,double>\ DoubleMap;}
+\DoxyCodeLine{00040\ \ \ \ \ std::unordered\_map<std::string,int>\ IntMap;\ }
+\DoxyCodeLine{00041\ \ \ \ \ std::unordered\_map<std::string,std::string>\ StringMap;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a152463af26523c5ab7ebe6f5c06e19ec}{add}}(std::string\ key,\ \textcolor{keywordtype}{double}\ val);}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a845d7091e2044d732c55c2c8dc35e7fd}{add}}(std::string\ key,\ \textcolor{keywordtype}{int}\ val);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a3e63df73b3eb939fcfdabde0ac11dc18}{add}}(std::string\ key,\ std::string\ val);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classDict_acae8230f89a61d7e254b096734504b60}{GetDouble}}(std::string\ key);}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classDict_a60c518563a75184c61179e0efff69498}{GetInt}}(std::string\ key);}
+\DoxyCodeLine{00076\ \ \ \ \ std::string\ \mbox{\hyperlink{classDict_a9bbc2c455ab4f2285be6b6dda63391d6}{GetString}}(std::string\ key);}
+\DoxyCodeLine{00077\ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_aae83b7b79358bef5d57365fe2515ba3f}{CheckDouble}}(std::string\ key);}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a973f68defba2caafd336b972af0541fa}{CheckInt}}(std::string\ key);}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a120671ed2d45fb7528f09392468bf032}{CheckString}}(std::string\ key);}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDict_a7e1bf8fe0404a99b46fa04754bfaa2fa}{Dump}}();}
+\DoxyCodeLine{00101\ \};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00132\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{include_2parselib_8hpp_af46fc274a075d84e9230cd0aab51649d}{ReadConfig}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ filename,\ \mbox{\hyperlink{classDict}{Dict}}*\ D,\ \textcolor{keywordtype}{bool}\ DEBUG);}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

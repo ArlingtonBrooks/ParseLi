@@ -1,0 +1,42 @@
+\hypertarget{include_2parselib_8hpp_source}{}\doxysection{parselib.\+hpp}
+\label{include_2parselib_8hpp_source}\index{include/parselib.hpp@{include/parselib.hpp}}
+\mbox{\hyperlink{include_2parselib_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ PARSELIB\_HPP\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ PARSELIB\_HPP\_\ 1}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <unordered\_map>}\ \textcolor{comment}{//std::unordered\_map}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00010\ \textcolor{comment}{Dictionary\ class}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ \ \ Makes\ loading\ values\ from\ a\ config\ file\ easier}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ \ \ (Access\ by\ "{}key"{}\ names\ which\ return\ associated\ values)}}
+\DoxyCodeLine{00013\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDict}{Dict}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ std::unordered\_map<std::string,double>\ DoubleMap;}
+\DoxyCodeLine{00017\ \ \ \ \ std::unordered\_map<std::string,int>\ IntMap;\ }
+\DoxyCodeLine{00018\ \ \ \ \ std::unordered\_map<std::string,std::string>\ StringMap;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a91e726d1a054d6b44162c21548b06d16}{add}}(std::string,\ \textcolor{keywordtype}{double});}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a91e726d1a054d6b44162c21548b06d16}{add}}(std::string,\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDict_a91e726d1a054d6b44162c21548b06d16}{add}}(std::string,\ std::string);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classDict_acae8230f89a61d7e254b096734504b60}{GetDouble}}(std::string\ key);}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classDict_a7e847326c83beab5f63e4611ac20a1c4}{GetInt}}(std::string\ key);}
+\DoxyCodeLine{00027\ \ \ \ \ std::string\ \mbox{\hyperlink{classDict_ae71da8ae901c4b95fd605409ab5056ca}{GetString}}(std::string\ key);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDict_a7e1bf8fe0404a99b46fa04754bfaa2fa}{Dump}}();}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//extern\ "{}C"{}\ bool\ ReadConfig(const\ char*\ filename,\ Dict*\ D);}}
+\DoxyCodeLine{00033\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{include_2parselib_8hpp_af46fc274a075d84e9230cd0aab51649d}{ReadConfig}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ filename,\ \mbox{\hyperlink{classDict}{Dict}}*\ D,\ \textcolor{keywordtype}{bool}\ DEBUG=\textcolor{keyword}{false});}
+\DoxyCodeLine{00034\ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
