@@ -47,6 +47,8 @@ Using `enforce` creates a string type object, so if you intend to enforce a `dou
 Example: <br>
 >    enforce SomeImportantProperty1 5 #this will not create an integer object <br>
 >    enforce SomeImportantProperty2 SomeString
+<br>
+Currently enforcement does not work as intended and does not protect against future values overwriting current values.  This is not a high priority to be fixed, however.  
 
 # FORMATTING TIPS
 The formatting is mostly up to you, however you **should avoid leaving comments on the same line as variables** to avoid that variable being incorrectly written or mistakenly set as the wrong type.  

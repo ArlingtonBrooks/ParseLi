@@ -1,36 +1,103 @@
+/*
+	Copyright (C) 2019-2022  ArlingtonBrooks
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/** @file
+ * @brief Parser library header file
+ * 
+ * This file contains the Dict class definition as well as functions for 
+ * loading configuration files.
+ */
 #ifndef PARSELIB_HPP_
 #define PARSELIB_HPP_ 1
 
 #include <string>
 #include <unordered_map> //std::unordered_map
 
-extern "C" {
+/** @namespace ParseLi 
+ * @brief The namespace encompassing the ParseLi functions
+ */
+namespace ParseLi {
 
-/*
-Dictionary class
-    Makes loading values from a config file easier
-    (Access by "key" names which return associated values)
+/** @class Dict
+ * @brief A class contining information loaded from a configuration file
+ * 
+ * This class creates a set of unordered maps which translate a `std::string` key
+ * 	into `double`, `int`, or `std::string` values read from an input
+ *	configuration file.  
+ * @todo It may be beneficial to add separate maps for value enforcement.
+ * @{
 */
 class Dict
 {
-    std::unordered_map<std::string,double> DoubleMap;
-    std::unordered_map<std::string,int> IntMap; 
-    std::unordered_map<std::string,std::string> StringMap;
+	std::unordered_map<std::string,double> DoubleMap;		///<Dictionary containing doubles
+	std::unordered_map<std::string,int> IntMap; 		///<Dictionary containing ints
+	std::unordered_map<std::string,std::string> StringMap;	///<Dictionary containing strings
 
-    public:
-    bool add(std::string, double);
-    bool add(std::string, int);
-    bool add(std::string, std::string);
+	public:
+	/** @brief Add a `double` to the dictionary map */
+	bool add(std::string key, double val);
+	/** @overload bool add(std::string key, int val); */
+	bool add(std::string key, int val);
+	/** @overload bool add(std::string key, std::string val); */
+	bool add(std::string key, std::string val);
 
-    double GetDouble(std::string key);
-    int GetInt(std::string key);
-    std::string GetString(std::string key);
+	/** @brief Get the double corresponding to `key` */
+	const double GetDouble(std::string key);
+	/** @brief Get the int corresponding to `key` */
+	const int GetInt(std::string key);
+	/** @brief Get the string corresponding to `key` */
+	const std::string GetString(std::string key);
+	
+	/** @brief Check if `key` exists in `double`s map */
+	const bool CheckDouble(std::string key);
+	/** @brief Check if `key` exists in `int`s map*/
+	const bool CheckInt(std::string key);
+	/** @brief Check if `key` exists in `std::string`s map */
+	const bool CheckString(std::string key);
 
-    void Dump();
+	/** @brief Prints information about loaded dictionary to stdout */
+	const void Dump();
 };
+/** @} */
 
-//extern "C" bool ReadConfig(const char* filename, Dict* D);
-bool ReadConfig(const char* filename, Dict* D, bool DEBUG=false);
-}
+/**
+ * @brief Skips whitespace in a std::string and increments a position indicator accordingly
+ */
+bool SkipStringWhitespace(std::string &LineData, int &siter);
+
+/**
+ * @brief Reads a word from a std::string and increments a position indicator accordingly (terminates on whitespace)
+ */
+std::string ReadValue(std::string LineData, int& siter);
+
+/**
+ * @brief Parses a std::string to determine what type of information is contained (string, int, or float)
+ */
+void GetValueType(bool* ValCheck, std::string VarVal);
+
+/**
+ * @brief Stores a value given by VarVal in the dictionary with key VarName
+ */
+bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG = false);
+
+/**
+ * @brief Reads a configuration file into a Dict pointer
+*/
+bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false);
+} //namespace ParseLi
 
 #endif

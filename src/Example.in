@@ -6,15 +6,23 @@
 #######################################
 #######################################
 TIMESCHEME EULER
-MODE 1
+SCHEME ROE #delete this to use default
+MODE  	 1
 CASE SHOCKTUBE
 
 #Enforcement requires 3 terms:
 #1) the 'enforce' keyword
 #2) the property being enforced
-#3) what value is being enforced
+#3) what value is being enforced (NOTE: STRING ONLY)
+# 'enforce' can be overwritten by variables
+# 	defined after the 'enforce' keyword,
+#	so care should be taken to order this
+#	correctly.
+#BOUNDARIES TEST
 enforce BOUNDARIES FREE
 include Vacuum.in
+
+STRING SOME VALUES HERE #This will ignore input after `SOME`
 
 #Switches
 FASTMODE  TRUE
@@ -32,6 +40,7 @@ NLAMLIM 1e-24
 GRADLIM 1e-6
 
 #Modifications
+CFL_NUMBER 0.25 #Delete this to use default
 WVXFACTOR 1.15 #CB point: 1.08
 
 #unused
