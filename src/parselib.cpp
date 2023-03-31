@@ -171,8 +171,8 @@ void Dict::Dump() const
 }
 
 /**
- * @param LineData	Line data being parsed
- * @param siter		Current string iterator position (incremented to skip whitespace)
+ * @param LineData      Line data being parsed
+ * @param siter         Current string iterator position (incremented to skip whitespace)
  * @returns `true` if whitespace is skipped and input is ready to be parsed
  * @returns `false` if a comment indicator or null character is encountered
  */
@@ -186,8 +186,8 @@ bool SkipStringWhitespace(std::string &LineData, int &siter)
 }
 
 /**
- * @param LineData	Line data being parsed
- * @param siter		Current string iterator position (incremented to end of word)
+ * @param LineData      Line data being parsed
+ * @param siter         Current string iterator position (incremented to end of word)
  * @returns std::string containing the value read (excluding whitespace characters)
  */
 std::string ReadValue(std::string LineData, int& siter)
@@ -201,8 +201,8 @@ std::string ReadValue(std::string LineData, int& siter)
 }
 
 /**
- * @param ValCheck	Vector of 3 bools indicating if (0) contains numbers, (1) contains a decimal point, (2) contains other characters that are non-numeric
- * @param VarVal	String being tested
+ * @param ValCheck      Vector of 3 bools indicating if (0) contains numbers, (1) contains a decimal point, (2) contains other characters that are non-numeric
+ * @param VarVal        String being tested
  */
 void GetValueType(bool* ValCheck, std::string VarVal)
 {
@@ -235,12 +235,12 @@ void GetValueType(bool* ValCheck, std::string VarVal)
 }
 
 /**
- * @param D		Dictionary object being manipulated
- * @param VarName	Variable name being added to dictionary
- * @param VarVal	Value being added (as std::string; this will be parsed internally)
- * @param ln		Line number (for error handling)
- * @param BUFFER	Character array containing line data (for error handling)
- * @param DEBUG		Error handling flag
+ * @param D             Dictionary object being manipulated
+ * @param VarName       Variable name being added to dictionary
+ * @param VarVal        Value being added (as std::string; this will be parsed internally)
+ * @param ln            Line number (for error handling)
+ * @param BUFFER        Character array containing line data (for error handling)
+ * @param DEBUG         Error handling flag
  * @returns `true` on successful addition of a value to the dictionary.
  * @returns `false` if a value was not able to be added to the dictionary.
  */
@@ -281,11 +281,11 @@ bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const 
 }
 
 /**
- * @param filename	Name of file being loaded
- * @param D		Dictionary where information is loaded to
- * @param siter		Current string iterator position (incremented to end of word)
- * @param VarVal	Name of enforced variable being tested
- * @param LineData	Current line being parsed
+ * @param filename      Name of file being loaded
+ * @param D             Dictionary where information is loaded to
+ * @param siter         Current string iterator position (incremented to end of word)
+ * @param VarVal        Name of enforced variable being tested
+ * @param LineData      Current line being parsed
  * @returns `true` if enforced value is satisfied (or has been added to dictionary)
  * @returns `false` if enforcement is violated by a prior definition
  */
@@ -313,9 +313,9 @@ bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVa
 }
 
 /**
- * @param filename 	Name of the configuration file to read
- * @param D 		Dictionary where information is loaded to
- * @param DEBUG 	Whether to print debugging information
+ * @param filename      Name of the configuration file to read
+ * @param D             Dictionary where information is loaded to
+ * @param DEBUG         Whether to print debugging information
  * @return `True` on successful read of config file
  * @return `False` if an error occurs, with accompanying output to stdout
  *
