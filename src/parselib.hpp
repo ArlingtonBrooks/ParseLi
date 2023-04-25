@@ -24,6 +24,10 @@
 #ifndef PARSELIB_HPP_
 #define PARSELIB_HPP_ 1
 
+#include <iostream> //std::cout, std::cerr
+#include <iomanip> //std::setw, std::left
+#include <fstream> //std::ifstream
+#include <stdexcept>
 #include <string>
 #include <unordered_map> //std::unordered_map
 

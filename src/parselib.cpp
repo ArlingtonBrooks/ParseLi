@@ -25,11 +25,6 @@
 #ifndef PARSELIB_CPP_
 #define PARSELIB_CPP_ 1
 
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <stdexcept>
-#include <string>
 #include "parselib.hpp" //Dict
 
 namespace ParseLi {
