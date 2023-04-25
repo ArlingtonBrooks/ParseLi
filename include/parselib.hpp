@@ -24,6 +24,10 @@
 #ifndef PARSELIB_HPP_
 #define PARSELIB_HPP_ 1
 
+#include <iostream> //std::cout, std::cerr
+#include <iomanip> //std::setw, std::left
+#include <fstream> //std::ifstream
+#include <stdexcept>
 #include <string>
 #include <unordered_map> //std::unordered_map
 
@@ -43,9 +47,9 @@ namespace ParseLi {
 */
 class Dict
 {
-	std::unordered_map<std::string,double> DoubleMap;		///<Dictionary containing doubles
-	std::unordered_map<std::string,int> IntMap; 		///<Dictionary containing ints
-	std::unordered_map<std::string,std::string> StringMap;	///<Dictionary containing strings
+	std::unordered_map<std::string,double> DoubleMap;       ///<Dictionary containing doubles
+	std::unordered_map<std::string,int> IntMap;             ///<Dictionary containing ints
+	std::unordered_map<std::string,std::string> StringMap;  ///<Dictionary containing strings
 
 	public:
 	/** @brief Add a `double` to the dictionary map */
@@ -56,21 +60,21 @@ class Dict
 	bool add(std::string key, std::string val);
 
 	/** @brief Get the double corresponding to `key` */
-	const double GetDouble(std::string key);
+	double GetDouble(std::string key) const;
 	/** @brief Get the int corresponding to `key` */
-	const int GetInt(std::string key);
+	int GetInt(std::string key) const;
 	/** @brief Get the string corresponding to `key` */
-	const std::string GetString(std::string key);
+	std::string GetString(std::string key) const;
 	
 	/** @brief Check if `key` exists in `double`s map */
-	const bool CheckDouble(std::string key);
+	bool CheckDouble(std::string key) const;
 	/** @brief Check if `key` exists in `int`s map*/
-	const bool CheckInt(std::string key);
+	bool CheckInt(std::string key) const;
 	/** @brief Check if `key` exists in `std::string`s map */
-	const bool CheckString(std::string key);
+	bool CheckString(std::string key) const;
 
 	/** @brief Prints information about loaded dictionary to stdout */
-	const void Dump();
+	void Dump() const;
 };
 /** @} */
 
@@ -95,9 +99,24 @@ void GetValueType(bool* ValCheck, std::string VarVal);
 bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG = false);
 
 /**
+ * @brief Enforces the value of a string (with some limitations)
+ */
+bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVal, std::string &LineData);
+
+/**
+ * @brief Handles a set of input data
+ */
+bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG = false);
+
+/**
  * @brief Reads a configuration file into a Dict pointer
 */
 bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false);
+
+/**
+ * @brief Reads from any input stream (istream) into a Dict pointer
+*/
+bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG =false);
 } //namespace ParseLi
 
 #endif

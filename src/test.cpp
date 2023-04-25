@@ -1,4 +1,5 @@
 #include "parselib.cpp"
+#include <sstream>
 
 int GetScheme(std::string Scheme)
 {
@@ -27,4 +28,20 @@ int main(int argc, char** argv)
 	
 	printf("CFL_NUMBER is set to %lf\n",CFL_NUMBER);
 	printf("SCHEME is set to %d, where 1=HLLE and 2=ROE\n",SCHEME);
+	
+	//Streamed input
+	std::stringstream test2;
+	test2 << "String 1" << std::endl;
+	test2 << "test teststring" << std::endl;
+	test2 << "float 1.05" << std::endl;
+	test2 << "WARNING This is a warning" << std::endl;
+	ParseLi::Dict D2;
+	ParseLi::ReadConfig(test2,&D2,false);
+	D2.Dump();
+	
+	//Another file input
+	ParseLi::Dict D3;
+	std::ifstream I1("Example.in");
+	ParseLi::ReadConfig(I1,&D3,false);
+	D3.Dump();
 }

@@ -460,6 +460,68 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 	return true;
 };
 
+/**
+ * @param f_in          Generic stream file input
+ * @param D             Dictionary where information is loaded to
+ * @param DEBUG         Whether to print debugging information
+ * @return `True` on successful read of config
+ * @return `False` if an error occurs, with accompanying output to stdout
+*/
+bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
+{
+	using std::cerr, std::endl;
+	f_in.seekg(0,f_in.beg);
+	const char* filename = "(streamed input)";
+	char BUFFER[512];
+
+	int ln{0};
+	if (DEBUG)
+		cerr << "Opened " << filename << " for input" << endl;
+
+	while (f_in) {
+		std::string VarName;
+		std::string VarVal;
+		int siter {0}; //string iter
+		ln += 1;
+		//Read line from buffer;
+		f_in.getline(BUFFER,512);
+
+		//Return if file failed to read;
+		if (f_in.fail() && !f_in.eof()) {
+			cerr << "An error occurred while reading " << filename << ".  Failed to load." << endl;
+			cerr << "Characters in buffer: " << endl << BUFFER << endl;
+			return false;
+		}
+		if (f_in.eof())
+			break;
+
+		if (DEBUG)
+			cerr << "(" << ln << "): " << BUFFER << endl;
+
+		std::string LineData = std::string(BUFFER);
+		if (!SkipStringWhitespace(LineData,siter))
+			continue;
+
+		//Read variable name
+		VarName = ReadValue(LineData,siter);
+		if (VarName.length() < 1)
+			continue;
+		
+		//Read variable value
+		if (!SkipStringWhitespace(LineData,siter)) {
+			cerr << "Reached end of line " << ln << "while parsing variable: " << LineData << endl;
+			return false;
+		}
+		VarVal = ReadValue(LineData,siter);
+		
+		if (!ValueHandler(filename, BUFFER, ln, D, siter, VarName, VarVal, LineData, DEBUG))
+			return false;
+	}
+	if (DEBUG)
+		cerr << "Completed parsing (streamed input)" << endl;
+	return true;
+};
+
 } //namespace ParseLi
 
 #endif
