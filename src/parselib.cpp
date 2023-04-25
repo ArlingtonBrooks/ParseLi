@@ -26,6 +26,7 @@
 #define PARSELIB_CPP_ 1
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -68,7 +69,7 @@ double Dict::GetDouble(std::string key) const
 	double ret;
 	try {ret = DoubleMap.at(key);}
 	catch (const std::out_of_range& e){
-		fprintf(stderr,"Value \"%s\" out of range of doubles map (maybe this isn't a double?)\n",key.c_str());
+		std::cerr << "Value \"" << key << "\" out of range of doubles map (maybe this isn't a double?)" << std::endl;
 		throw;
 	}
 	return ret;
@@ -84,7 +85,7 @@ int Dict::GetInt(std::string key) const
 	int ret;
 	try {ret = IntMap.at(key);}
 	catch (const std::out_of_range& e) {
-		fprintf(stderr,"Value \"%s\" out of range of int map (maybe this isn't an int?)\n",key.c_str());
+		std::cerr << "Value \"" << key << "\" out of range of int map (maybe this isn't a int?)" << std::endl;
 		throw;
 	}
 	return ret;
@@ -100,7 +101,7 @@ std::string Dict::GetString(std::string key) const
 	std::string ret;
 	try {ret = StringMap.at(key);}
 	catch (const std::out_of_range& e){
-		fprintf(stderr,"Value \"%s\" out of range of strings map (maybe this isn't a string?)\n",key.c_str());
+		std::cerr << "Value \"" << key << "\" out of range of string map (maybe this isn't a string?)" << std::endl;
 		throw;
 	}
 	return ret;
@@ -151,23 +152,28 @@ bool Dict::CheckString(std::string key) const
 //Printout all values from the dictionary
 void Dict::Dump() const
 {
-	printf("Dictionary Dump\n\n+->Integer Database\n");
+	using std::cout, std::endl, std::setw;
+	cout << "Dictionary Dump" << endl << endl << "+->Integer Database" << endl;
 	//Dump Integers
-	printf("+--->Size: %lu\n+---># of Buckets: %lu\n+--->Load Factor: %f\n+--->Entries:\n",IntMap.size(),IntMap.bucket_count(),IntMap.load_factor());
+	cout << "+--->Size: " << IntMap.size() << endl;
+	cout << "+---># of Buckets: " << IntMap.bucket_count() << endl;
+	cout << "+--->Load Factor: " << IntMap.load_factor() << endl;
 	for (auto i : IntMap)// = IntMap.begin(); i != IntMap.end(); ++i)
-		printf("		  %s: %d\n",i.first.c_str(),i.second);
+		cout << setw(20) << std::left << i.first << ": " << i.second << endl;
 
-	printf("\n\n+->Float Database\n");
-	//Dump Integers
-	printf("+--->Size: %lu\n+---># of Buckets: %lu\n+--->Load Factor: %f\n+--->Entries:\n",DoubleMap.size(),DoubleMap.bucket_count(),DoubleMap.load_factor());
-	for (auto i : DoubleMap) // = DoubleMap.begin(); i != DoubleMap.end(); ++i)
-		printf("		  %s: %lf\n",i.first.c_str(),i.second);
+	//Dump Floats
+	cout << "+--->Size: " << DoubleMap.size() << endl;
+	cout << "+---># of Buckets: " << DoubleMap.bucket_count() << endl;
+	cout << "+--->Load Factor: " << DoubleMap.load_factor() << endl;
+	for (auto i : DoubleMap)// = DoubleMap.begin(); i != DoubleMap.end(); ++i)
+		cout << setw(20) << std::left << i.first << ": " << i.second << endl;
 
-	printf("\n\n+->String Database\n");
-	//Dump Integers
-	printf("+--->Size: %lu\n+---># of Buckets: %lu\n+--->Load Factor: %f\n+--->Entries:\n",StringMap.size(),StringMap.bucket_count(),StringMap.load_factor());
+	//Dump Strings
+	cout << "+--->Size: " << StringMap.size() << endl;
+	cout << "+---># of Buckets: " << StringMap.bucket_count() << endl;
+	cout << "+--->Load Factor: " << StringMap.load_factor() << endl;
 	for (auto i : StringMap)// = StringMap.begin(); i != StringMap.end(); ++i)
-		printf("		  %s: %s\n",i.first.c_str(),i.second.c_str());
+		cout << setw(20) << std::left << i.first << ": " << i.second << endl;
 }
 
 /**
@@ -246,36 +252,37 @@ void GetValueType(bool* ValCheck, std::string VarVal)
  */
 bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG /*=false*/)
 {
+	using std::cerr, std::endl;
 	bool ValCheck[3] {0,0,0}; //int, double, string;
 	GetValueType(ValCheck,VarVal);
 	if (ValCheck[2]) { //String add
 		D->add(VarName,VarVal);
 		if (DEBUG)
-			fprintf(stderr,"String added: %s:\t%s\n",VarName.c_str(),VarVal.c_str());
+			cerr << "String added: " << VarName << ": " << VarVal << endl;
 	} else if (ValCheck[1]) { //(double) float add
 		try {D->add(VarName,std::stod(VarVal.c_str()));}
 		catch (const std::invalid_argument &e) {
-			fprintf(stderr,"Failed to parse double %s on line %d:\n",VarVal.c_str(),ln);
-			fprintf(stderr,"%s",BUFFER);
+			cerr << "Failed to parse double " << VarVal << " on line " << ln << ":" << endl;
+			cerr << BUFFER << endl;
 			return false;
 		} catch (const std::out_of_range &e) {
-			fprintf(stderr,"Double %s on line %d is out of range.\n",VarVal.c_str(),ln);
+			cerr << "Double " << VarVal << " on line " << ln << " is out of range." << endl;
 			return false;
 		}
 		if (DEBUG)
-			fprintf(stderr,"Float added: %s:\t%s\n",VarName.c_str(),VarVal.c_str());
+			cerr << "Float added: " << VarName << ": " << VarVal << endl;
 	} else if (ValCheck[0]) { //int add
 		try {D->add(VarName,std::stoi(VarVal.c_str()));}
 		catch (const std::invalid_argument &e) {
-			fprintf(stderr,"Failed to parse int %s on line %d:\n",VarVal.c_str(),ln);
-			fprintf(stderr,"%s",BUFFER);
+			cerr << "Failed to parse int " << VarVal << " on line " << ln << ":" << endl;
+			cerr << BUFFER << endl;
 			return false;
 		} catch (const std::out_of_range &e) {
-			fprintf(stderr,"Int %s on line %d is out of range.\n",VarVal.c_str(),ln);
+			cerr << "Int " << VarVal << " on line " << ln << " is out of range." << endl;
 			return false;
 		}
 		if (DEBUG)
-			fprintf(stderr,"Int added: %s:\t%s\n",VarName.c_str(),VarVal.c_str());
+			cerr << "Int added: " << VarName << ": " << VarVal << endl;
 	}
 	return true;
 }
@@ -299,7 +306,8 @@ bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVa
 			siter++;
 		}
 		if (EnforceVal.compare(D->GetString(Enforcer)) != 0) {
-			fprintf(stderr,"Error enforcing %s in filename %s: value mismatch (%s vs %s)\n",Enforcer.c_str(),filename,EnforceVal.c_str(),D->GetString(Enforcer).c_str());
+			std::cerr << "Error enforcing " << Enforcer << " in filename " << filename; 
+			std::cerr << ": value mismatch (" << EnforceVal << " vs " << D->GetString(Enforcer) << ")" << std::endl;
 			return false;
 		}
 	} else {
@@ -309,6 +317,54 @@ bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVa
 		}
 		D->add(Enforcer,EnforceVal);
 	}
+	return true;
+}
+
+/**
+ * @param filename      Name of file being loaded
+ * @param BUFFER        Raw line data buffer
+ * @param ln            Line number
+ * @param D             Dictionary where information is loaded to
+ * @param siter         Current string iterator position (incremented to end of word)
+ * @param VarName       Name of variable being handled
+ * @param VarVal        Value of variable being handled
+ * @param LineData      Current line being parsed
+ * @param DEBUG         Whether to print debug info
+ * @returns `true` if line data was handled successfully
+ * @returns `false` if something went wrong (outputs to std::cerr)
+ */
+bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG /*=false*/) 
+{
+	using std::cerr, std::endl;
+	//Include handler (THIS DOES NOT DETECT RECURSION)
+	//Recursion detection could be implemented by keeping a running tab of open files
+	if (VarName.compare("include") == 0 || VarName.compare("INCLUDE") == 0) {
+		if (VarVal.compare(filename) == 0) {
+			cerr << "Error in file include: Filename " << VarVal << " cannot include itself (line " << ln << ")" << endl;
+			return true;
+		}
+		ReadConfig(VarVal.c_str(),D,DEBUG);
+		return true;
+	} 
+	//Warning handler
+	if (VarName.compare("WARNING") == 0 || VarName.compare("warning") == 0) {
+		cerr << "\x1b[1mWARNING\x1b[0m:";
+		cerr << LineData.substr(LineData.find(' ')) << endl;
+		return true;
+	}
+	
+	//Enforcement handler (only handles strings)
+	if (VarName.compare("enforce") == 0 || VarName.compare("ENFORCE") == 0) {
+		bool EnforceSuccess = ValueEnforcer(filename, D, siter, VarVal, LineData);
+		if (EnforceSuccess)
+			return true;
+		else
+			return false;
+	}
+	//Store in dictionary
+	if (!StoreValue(D,VarName,VarVal,ln,BUFFER,DEBUG))
+		return false;
+	
 	return true;
 }
 
@@ -349,6 +405,7 @@ bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVa
 */
 bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 {
+	using std::cerr, std::endl;
 	//Check file exists (old C-way)
 	FILE *f{fopen(filename,"r")};
 	if (f == NULL) return false;
@@ -361,7 +418,7 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 
 	int ln{0};
 	if (DEBUG)
-		fprintf(stderr,"Opened %s for input\n",filename);
+		cerr << "Opened " << filename << " for input" << endl;
 
 	while (f_in.good()) {
 		std::string VarName;
@@ -373,15 +430,15 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 
 		//Return if file failed to read;
 		if (f_in.fail() && !f_in.eof()) {
-			fprintf(stderr,"An error occurred while reading file %s.  Failed to load.\n",filename);
-			fprintf(stderr,"Characters in buffer: \n\t%s\n",BUFFER);
+			cerr << "An error occurred while reading " << filename << ".  Failed to load." << endl;
+			cerr << "Characters in buffer: " << endl << BUFFER << endl;
 			return false;
 		}
 		if (f_in.eof())
 			break;
 
 		if (DEBUG)
-			fprintf(stderr,"(%d): %s\n",ln,BUFFER);
+			cerr << "(" << ln << "): " << BUFFER << endl;
 
 		std::string LineData = std::string(BUFFER);
 		if (!SkipStringWhitespace(LineData,siter))
@@ -394,36 +451,16 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 		
 		//Read variable value
 		if (!SkipStringWhitespace(LineData,siter)) {
-			fprintf(stderr,"Reached end of line %d while parsing variable: %s\n",ln,LineData.c_str());
+			cerr << "Reached end of line " << ln << "while parsing variable: " << LineData << endl;
 			return false;
 		}
 		VarVal = ReadValue(LineData,siter);
 		
-		//Include handler (THIS DOES NOT DETECT RECURSION)
-		//Recursion detection could be implemented by keeping a running tab of open files
-		if (VarName.compare("include") == 0 || VarName.compare("INCLUDE") == 0) {
-			if (VarVal.compare(filename) == 0) {
-				fprintf(stderr,"Error in file include: Filename %s cannot include itself (line %d)\n",VarVal.c_str(),ln);
-				continue;
-			}
-			ReadConfig(VarVal.c_str(),D,DEBUG);
-			continue;
-		}
-		
-		//Enforcement handler (only handles strings)
-		if (VarName.compare("enforce") == 0 || VarName.compare("ENFORCE") == 0) {
-			bool EnforceSuccess = ValueEnforcer(filename, D, siter, VarVal, LineData);
-			if (EnforceSuccess)
-				continue;
-			else
-				return false;
-		}
-		//Store in dictionary
-		if (!StoreValue(D,VarName,VarVal,ln,BUFFER,DEBUG))
+		if (!ValueHandler(filename, BUFFER, ln, D, siter, VarName, VarVal, LineData, DEBUG))
 			return false;
 	}
 	if (DEBUG)
-		fprintf(stderr,"Closed %s for input\n",filename);
+		cerr << "Closed " << filename << " for input." << endl;
 	f_in.close();
 	return true;
 };

@@ -10,6 +10,8 @@ SCHEME ROE #delete this to use default
 MODE  	 1
 CASE SHOCKTUBE
 
+WARNING This file is just for demonstration purposes.
+
 #Enforcement requires 3 terms:
 #1) the 'enforce' keyword
 #2) the property being enforced

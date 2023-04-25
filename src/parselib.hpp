@@ -43,9 +43,9 @@ namespace ParseLi {
 */
 class Dict
 {
-	std::unordered_map<std::string,double> DoubleMap;		///<Dictionary containing doubles
-	std::unordered_map<std::string,int> IntMap; 		///<Dictionary containing ints
-	std::unordered_map<std::string,std::string> StringMap;	///<Dictionary containing strings
+	std::unordered_map<std::string,double> DoubleMap;       ///<Dictionary containing doubles
+	std::unordered_map<std::string,int> IntMap;             ///<Dictionary containing ints
+	std::unordered_map<std::string,std::string> StringMap;  ///<Dictionary containing strings
 
 	public:
 	/** @brief Add a `double` to the dictionary map */
@@ -98,6 +98,11 @@ bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const 
  * @brief Enforces the value of a string (with some limitations)
  */
 bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVal, std::string &LineData);
+
+/**
+ * @brief Handles a set of input data
+ */
+bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG = false);
 
 /**
  * @brief Reads a configuration file into a Dict pointer
