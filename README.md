@@ -50,6 +50,9 @@ Example: <br>
 <br>
 Currently enforcement does not work as intended and does not protect against future values overwriting current values.  This is not a high priority to be fixed, however.  
 
+### PRINTING A WARNING
+You may print a warning to the user using the `WARNING` keyword, which will simply print the rest of the line.  
+
 # FORMATTING TIPS
 The formatting is mostly up to you, however you **should avoid leaving comments on the same line as variables** to avoid that variable being incorrectly written or mistakenly set as the wrong type.  
 
