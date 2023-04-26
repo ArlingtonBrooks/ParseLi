@@ -47,3 +47,9 @@ WVXFACTOR 1.15 #CB point: 1.08
 
 #unused
 ITOL 1e-12
+
+BREAK
+
+Here are some additional lines of text
+to demonstrate that nothing after the
+'BREAK' statement is read by the parser.

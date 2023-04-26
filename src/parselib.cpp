@@ -252,8 +252,7 @@ bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const 
 	GetValueType(ValCheck,VarVal);
 	if (ValCheck[2]) { //String add
 		D->add(VarName,VarVal);
-		if (DEBUG)
-			cerr << "String added: " << VarName << ": " << VarVal << endl;
+		if (DEBUG) cerr << "String added: " << VarName << ": " << VarVal << endl;
 	} else if (ValCheck[1]) { //(double) float add
 		try {D->add(VarName,std::stod(VarVal.c_str()));}
 		catch (const std::invalid_argument &e) {
@@ -264,8 +263,7 @@ bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const 
 			cerr << "Double " << VarVal << " on line " << ln << " is out of range." << endl;
 			return false;
 		}
-		if (DEBUG)
-			cerr << "Float added: " << VarName << ": " << VarVal << endl;
+		if (DEBUG) cerr << "Float added: " << VarName << ": " << VarVal << endl;
 	} else if (ValCheck[0]) { //int add
 		try {D->add(VarName,std::stoi(VarVal.c_str()));}
 		catch (const std::invalid_argument &e) {
@@ -276,8 +274,7 @@ bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const 
 			cerr << "Int " << VarVal << " on line " << ln << " is out of range." << endl;
 			return false;
 		}
-		if (DEBUG)
-			cerr << "Int added: " << VarName << ": " << VarVal << endl;
+		if (DEBUG) cerr << "Int added: " << VarName << ": " << VarVal << endl;
 	}
 	return true;
 }
@@ -410,54 +407,9 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 
 	//Open file for reading
 	std::ifstream f_in(filename,std::ifstream::in);
-
-	int ln{0};
-	if (DEBUG)
-		cerr << "Opened " << filename << " for input" << endl;
-
-	while (f_in.good()) {
-		std::string VarName;
-		std::string VarVal;
-		int siter {0}; //string iter
-		ln += 1;
-		//Read line from buffer;
-		f_in.getline(BUFFER,512);
-
-		//Return if file failed to read;
-		if (f_in.fail() && !f_in.eof()) {
-			cerr << "An error occurred while reading " << filename << ".  Failed to load." << endl;
-			cerr << "Characters in buffer: " << endl << BUFFER << endl;
-			return false;
-		}
-		if (f_in.eof())
-			break;
-
-		if (DEBUG)
-			cerr << "(" << ln << "): " << BUFFER << endl;
-
-		std::string LineData = std::string(BUFFER);
-		if (!SkipStringWhitespace(LineData,siter))
-			continue;
-
-		//Read variable name
-		VarName = ReadValue(LineData,siter);
-		if (VarName.length() < 1)
-			continue;
-		
-		//Read variable value
-		if (!SkipStringWhitespace(LineData,siter)) {
-			cerr << "Reached end of line " << ln << "while parsing variable: " << LineData << endl;
-			return false;
-		}
-		VarVal = ReadValue(LineData,siter);
-		
-		if (!ValueHandler(filename, BUFFER, ln, D, siter, VarName, VarVal, LineData, DEBUG))
-			return false;
-	}
-	if (DEBUG)
-		cerr << "Closed " << filename << " for input." << endl;
-	f_in.close();
-	return true;
+	if (DEBUG) cerr << "Opened " << filename << " for input" << endl;
+	
+	return ReadConfig(f_in,D,DEBUG);
 };
 
 /**
@@ -475,8 +427,7 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 	char BUFFER[512];
 
 	int ln{0};
-	if (DEBUG)
-		cerr << "Opened " << filename << " for input" << endl;
+	if (DEBUG) cerr << "Opened " << filename << " for input" << endl;
 
 	while (f_in) {
 		std::string VarName;
@@ -495,8 +446,7 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 		if (f_in.eof())
 			break;
 
-		if (DEBUG)
-			cerr << "(" << ln << "): " << BUFFER << endl;
+		if (DEBUG) cerr << "(" << ln << "): " << BUFFER << endl;
 
 		std::string LineData = std::string(BUFFER);
 		if (!SkipStringWhitespace(LineData,siter))
@@ -504,6 +454,10 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 
 		//Read variable name
 		VarName = ReadValue(LineData,siter);
+		if (VarName.compare("BREAK") == 0) { //Stop reading on break signal
+			if (DEBUG) cerr << "Encountered \"BREAK\" signal.  Terminating input." << endl;
+			break;
+		}
 		if (VarName.length() < 1)
 			continue;
 		
@@ -517,8 +471,7 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 		if (!ValueHandler(filename, BUFFER, ln, D, siter, VarName, VarVal, LineData, DEBUG))
 			return false;
 	}
-	if (DEBUG)
-		cerr << "Completed parsing (streamed input)" << endl;
+	if (DEBUG) cerr << "Completed parsing (streamed input)" << endl;
 	return true;
 };
 
