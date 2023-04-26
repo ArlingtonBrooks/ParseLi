@@ -163,6 +163,7 @@ bool Dict::CheckString(std::string key) const
 void Dict::Dump() const
 {
 	using std::cout, std::endl, std::setw;
+	DictMutex.lock();
 	cout << "Dictionary Dump" << endl << endl << "+->Integer Database" << endl;
 	//Dump Integers
 	cout << "+--->Size: " << IntMap.size() << endl;
@@ -184,6 +185,7 @@ void Dict::Dump() const
 	cout << "+--->Load Factor: " << StringMap.load_factor() << endl;
 	for (auto i : StringMap)// = StringMap.begin(); i != StringMap.end(); ++i)
 		cout << setw(20) << std::left << i.first << ": " << i.second << endl;
+	DictMutex.unlock();
 }
 
 /**
