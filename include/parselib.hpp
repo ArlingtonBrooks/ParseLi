@@ -27,6 +27,7 @@
 #include <iostream> //std::cout, std::cerr
 #include <iomanip> //std::setw, std::left
 #include <fstream> //std::ifstream
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <unordered_map> //std::unordered_map
@@ -52,6 +53,9 @@ class Dict
 	std::unordered_map<std::string,std::string> StringMap;  ///<Dictionary containing strings
 
 	public:
+	/** @brief Thread access controller */
+	mutable std::mutex DictMutex;
+	
 	/** @brief Add a `double` to the dictionary map */
 	bool add(std::string key, double val);
 	/** @overload bool add(std::string key, int val); */

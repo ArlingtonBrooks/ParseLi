@@ -36,21 +36,27 @@ namespace ParseLi {
 */
 bool Dict::add(std::string Key, double value)
 {
+	DictMutex.lock();
 	DoubleMap.emplace(Key,value);
+	DictMutex.unlock();
 	return true;
 }
 
 //integer overload for Dict::add
 bool Dict::add(std::string Key, int value)
 {
+	DictMutex.lock();
 	IntMap.emplace(Key,value);
+	DictMutex.unlock();
 	return true;
 }
 
 //std::string overload for Dict::add
 bool Dict::add(std::string Key, std::string value)
 {
+	DictMutex.lock();
 	StringMap.emplace(Key,value);
+	DictMutex.unlock();
 	return true;
 }
 
@@ -62,11 +68,14 @@ bool Dict::add(std::string Key, std::string value)
 double Dict::GetDouble(std::string key) const
 {
 	double ret;
+	DictMutex.lock();
 	try {ret = DoubleMap.at(key);}
 	catch (const std::out_of_range& e){
 		std::cerr << "Value \"" << key << "\" out of range of doubles map (maybe this isn't a double?)" << std::endl;
+		DictMutex.unlock();
 		throw;
 	}
+	DictMutex.unlock();
 	return ret;
 }
 
@@ -78,11 +87,14 @@ double Dict::GetDouble(std::string key) const
 int Dict::GetInt(std::string key) const
 {
 	int ret;
+	DictMutex.lock();
 	try {ret = IntMap.at(key);}
 	catch (const std::out_of_range& e) {
 		std::cerr << "Value \"" << key << "\" out of range of int map (maybe this isn't a int?)" << std::endl;
+		DictMutex.unlock();
 		throw;
 	}
+	DictMutex.unlock();
 	return ret;
 }
 
@@ -94,11 +106,14 @@ int Dict::GetInt(std::string key) const
 std::string Dict::GetString(std::string key) const
 {
 	std::string ret;
+	DictMutex.lock();
 	try {ret = StringMap.at(key);}
 	catch (const std::out_of_range& e){
 		std::cerr << "Value \"" << key << "\" out of range of string map (maybe this isn't a string?)" << std::endl;
+		DictMutex.unlock();
 		throw;
 	}
+	DictMutex.unlock();
 	return ret;
 }
 
