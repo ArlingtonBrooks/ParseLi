@@ -38,6 +38,8 @@ int main(int argc, char** argv)
 	ParseLi::Dict D2;
 	ParseLi::ReadConfig(test2,&D2,false);
 	D2.Dump();
+	D2 = D;
+	D2.Dump();
 	
 	//Another file input
 	ParseLi::Dict D3;

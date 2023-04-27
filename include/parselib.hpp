@@ -56,6 +56,27 @@ class Dict
 	/** @brief Thread access controller */
 	mutable std::mutex DictMutex;
 	
+	/** @brief Default constructor */
+	Dict() = default;
+	~Dict() = default;
+	
+	/** @brief Copy constructor */
+	Dict(const Dict &D) 
+	{
+		DoubleMap = D.DoubleMap;
+		IntMap = D.IntMap;
+		StringMap = D.StringMap;
+	}
+	
+	/** @brief Assignment operator */
+	Dict& operator=(const Dict &D)
+	{
+		DoubleMap = D.DoubleMap;
+		IntMap = D.IntMap;
+		StringMap = D.StringMap;
+		return *this;
+	}
+	
 	/** @brief Add a `double` to the dictionary map */
 	bool add(std::string key, double val);
 	/** @overload bool add(std::string key, int val); */

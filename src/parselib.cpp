@@ -36,27 +36,24 @@ namespace ParseLi {
 */
 bool Dict::add(std::string Key, double value)
 {
-	DictMutex.lock();
+	std::lock_guard<std::mutex> lock(DictMutex);
 	DoubleMap.emplace(Key,value);
-	DictMutex.unlock();
 	return true;
 }
 
 //integer overload for Dict::add
 bool Dict::add(std::string Key, int value)
 {
-	DictMutex.lock();
+	std::lock_guard<std::mutex> lock(DictMutex);
 	IntMap.emplace(Key,value);
-	DictMutex.unlock();
 	return true;
 }
 
 //std::string overload for Dict::add
 bool Dict::add(std::string Key, std::string value)
 {
-	DictMutex.lock();
+	std::lock_guard<std::mutex> lock(DictMutex);
 	StringMap.emplace(Key,value);
-	DictMutex.unlock();
 	return true;
 }
 
@@ -68,14 +65,13 @@ bool Dict::add(std::string Key, std::string value)
 double Dict::GetDouble(std::string key) const
 {
 	double ret;
-	DictMutex.lock();
-	try {ret = DoubleMap.at(key);}
-	catch (const std::out_of_range& e){
+	try {
+		std::lock_guard<std::mutex> lock(DictMutex);
+		ret = DoubleMap.at(key);
+	} catch (const std::out_of_range& e){
 		std::cerr << "Value \"" << key << "\" out of range of doubles map (maybe this isn't a double?)" << std::endl;
-		DictMutex.unlock();
 		throw;
 	}
-	DictMutex.unlock();
 	return ret;
 }
 
@@ -87,14 +83,13 @@ double Dict::GetDouble(std::string key) const
 int Dict::GetInt(std::string key) const
 {
 	int ret;
-	DictMutex.lock();
-	try {ret = IntMap.at(key);}
-	catch (const std::out_of_range& e) {
+	try {
+		std::lock_guard<std::mutex> lock(DictMutex);
+		ret = IntMap.at(key);
+	} catch (const std::out_of_range& e) {
 		std::cerr << "Value \"" << key << "\" out of range of int map (maybe this isn't a int?)" << std::endl;
-		DictMutex.unlock();
 		throw;
 	}
-	DictMutex.unlock();
 	return ret;
 }
 
@@ -106,14 +101,13 @@ int Dict::GetInt(std::string key) const
 std::string Dict::GetString(std::string key) const
 {
 	std::string ret;
-	DictMutex.lock();
-	try {ret = StringMap.at(key);}
-	catch (const std::out_of_range& e){
+	try {
+		std::lock_guard<std::mutex> lock(DictMutex);
+		ret = StringMap.at(key);
+	} catch (const std::out_of_range& e){
 		std::cerr << "Value \"" << key << "\" out of range of string map (maybe this isn't a string?)" << std::endl;
-		DictMutex.unlock();
 		throw;
 	}
-	DictMutex.unlock();
 	return ret;
 }
 
@@ -124,7 +118,7 @@ std::string Dict::GetString(std::string key) const
 bool Dict::CheckDouble(std::string key) const
 {
 	try {
-		DoubleMap.at(key);
+		GetDouble(key);
 		return true;
 	} catch (const std::out_of_range& e){
 		return false;
@@ -138,7 +132,7 @@ bool Dict::CheckDouble(std::string key) const
 bool Dict::CheckInt(std::string key) const
 {
 	try {
-		IntMap.at(key);
+		GetInt(key);
 		return true;
 	} catch (const std::out_of_range& e){
 		return false;
@@ -152,7 +146,7 @@ bool Dict::CheckInt(std::string key) const
 bool Dict::CheckString(std::string key) const
 {
 	try {
-		StringMap.at(key);
+		GetString(key);
 		return true;
 	} catch (const std::out_of_range& e){
 		return false;
@@ -163,7 +157,7 @@ bool Dict::CheckString(std::string key) const
 void Dict::Dump() const
 {
 	using std::cout, std::endl, std::setw;
-	DictMutex.lock();
+	std::lock_guard<std::mutex> lock(DictMutex);
 	cout << "Dictionary Dump" << endl << endl << "+->Integer Database" << endl;
 	//Dump Integers
 	cout << "+--->Size: " << IntMap.size() << endl;
@@ -185,7 +179,6 @@ void Dict::Dump() const
 	cout << "+--->Load Factor: " << StringMap.load_factor() << endl;
 	for (auto i : StringMap)// = StringMap.begin(); i != StringMap.end(); ++i)
 		cout << setw(20) << std::left << i.first << ": " << i.second << endl;
-	DictMutex.unlock();
 }
 
 /**

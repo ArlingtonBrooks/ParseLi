@@ -6,7 +6,7 @@
 #######################################
 #######################################
 TIMESCHEME EULER
-SCHEME ROE #delete this to use default
+#SCHEME ROE #delete this to use default
 MODE  	 1
 CASE SHOCKTUBE
 
