@@ -117,12 +117,9 @@ std::string Dict::GetString(std::string key) const
 */
 bool Dict::CheckDouble(std::string key) const
 {
-	try {
-		GetDouble(key);
-		return true;
-	} catch (const std::out_of_range& e){
+	if (DoubleMap.find(key) == DoubleMap.end())
 		return false;
-	}
+	return true;
 }
 
 /**
@@ -131,12 +128,9 @@ bool Dict::CheckDouble(std::string key) const
 */
 bool Dict::CheckInt(std::string key) const
 {
-	try {
-		GetInt(key);
-		return true;
-	} catch (const std::out_of_range& e){
+	if (IntMap.find(key) == IntMap.end())
 		return false;
-	}
+	return true;
 }
 
 /**
@@ -145,12 +139,9 @@ bool Dict::CheckInt(std::string key) const
 */
 bool Dict::CheckString(std::string key) const
 {
-	try {
-		GetString(key);
-		return true;
-	} catch (const std::out_of_range& e){
+	if (StringMap.find(key) == StringMap.end())
 		return false;
-	}
+	return true;
 }
 
 //Printout all values from the dictionary
