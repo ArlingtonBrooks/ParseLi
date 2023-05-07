@@ -48,32 +48,36 @@ namespace ParseLi {
 */
 class Dict
 {
+	std::unordered_map<std::string,std::string> StringMap;  ///<Dictionary containing strings
 	std::unordered_map<std::string,double> DoubleMap;       ///<Dictionary containing doubles
 	std::unordered_map<std::string,int> IntMap;             ///<Dictionary containing ints
-	std::unordered_map<std::string,std::string> StringMap;  ///<Dictionary containing strings
 
-	public:
 	/** @brief Thread access controller */
 	mutable std::mutex DictMutex;
+	public:
 	
 	/** @brief Default constructor */
 	Dict() = default;
 	~Dict() = default;
 	
 	/** @brief Copy constructor */
-	Dict(const Dict &D) 
-	{
-		DoubleMap = D.DoubleMap;
-		IntMap = D.IntMap;
-		StringMap = D.StringMap;
-	}
+	explicit Dict(const Dict &D) : 
+		StringMap(D.StringMap),
+		DoubleMap(D.DoubleMap),
+		IntMap(D.IntMap) {}
 	
 	/** @brief Assignment operator */
 	Dict& operator=(const Dict &D)
 	{
-		DoubleMap = D.DoubleMap;
-		IntMap = D.IntMap;
-		StringMap = D.StringMap;
+		if (this != &D) {
+			//Lock both mutexes when ready
+			std::lock(DictMutex,D.DictMutex);
+			std::lock_guard<std::mutex> L_local(DictMutex, std::adopt_lock);
+			std::lock_guard<std::mutex> L_D(DictMutex, std::adopt_lock);
+			StringMap = D.StringMap;
+			DoubleMap = D.DoubleMap;
+			IntMap = D.IntMap;
+		}
 		return *this;
 	}
 	
