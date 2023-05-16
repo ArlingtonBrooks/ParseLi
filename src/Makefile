@@ -8,15 +8,16 @@ SRCS = parselib.cpp
 
 $(Target): $(SRCS)
 	mkdir -p BUILD
-	$(CXX) $(CXXFLAGS) $(SRCS) -o $(BASENAME).o
-	$(CXX) $(LIBFLAGS) -o $(BASENAME).so $(BASENAME).o
+	$(CXX) $(CXXFLAGS) $(SRCS) -o $(BASENAME).a
+	$(CXX) $(LIBFLAGS) -o $(BASENAME).so $(BASENAME).a
 	cp $(BASENAME).so BUILD/
+	cp $(BASENAME).a BUILD/
 
 test: test.cpp
 	$(CXX) test.cpp -o test.out
 
 clean:
 	rm -rf BUILD/
-	rm -f $(BASENAME).o
+	rm -f $(BASENAME).a
 	rm -f $(BASENAME).so
 	rm -f test.out

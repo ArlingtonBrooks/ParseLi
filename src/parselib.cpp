@@ -410,8 +410,6 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 	if (f == NULL) return false;
 	else fclose(f);
 
-	char BUFFER[512];
-
 	//Open file for reading
 	std::ifstream f_in(filename,std::ifstream::in);
 	if (DEBUG) cerr << "Opened " << filename << " for input" << endl;
