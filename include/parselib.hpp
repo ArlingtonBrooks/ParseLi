@@ -1,18 +1,21 @@
 /*
-	Copyright (C) 2019-2022  ArlingtonBrooks
+	A configuration file parsing library
+	Copyright (C) 2023  Arlington Brooks
 
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
+	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+	USA
 */
 
 /** @file
@@ -106,36 +109,6 @@ class Dict
 	void Dump() const;
 };
 /** @} */
-
-/**
- * @brief Skips whitespace in a std::string and increments a position indicator accordingly
- */
-bool SkipStringWhitespace(std::string &LineData, int &siter);
-
-/**
- * @brief Reads a word from a std::string and increments a position indicator accordingly (terminates on whitespace)
- */
-std::string ReadValue(std::string LineData, int& siter);
-
-/**
- * @brief Parses a std::string to determine what type of information is contained (string, int, or float)
- */
-void GetValueType(bool* ValCheck, std::string VarVal);
-
-/**
- * @brief Stores a value given by VarVal in the dictionary with key VarName
- */
-bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG = false);
-
-/**
- * @brief Enforces the value of a string (with some limitations)
- */
-bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVal, std::string &LineData);
-
-/**
- * @brief Handles a set of input data
- */
-bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG = false);
 
 /**
  * @brief Reads a configuration file into a Dict pointer

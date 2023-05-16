@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Werror -Wextra -fPIC -c -O3 -march=native
+CXXFLAGS=-Wall -Werror -Wextra -fPIC -c -O3 -std=c++17 -march=native
 LIBFLAGS=--shared
 
 Target=libparselib.so
