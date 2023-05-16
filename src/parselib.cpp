@@ -173,12 +173,13 @@ void Dict::Dump() const
 }
 
 /**
+ * @brief Skips whitespace in a std::string and increments a position indicator accordingly
  * @param LineData      Line data being parsed
  * @param siter         Current string iterator position (incremented to skip whitespace)
  * @returns `true` if whitespace is skipped and input is ready to be parsed
  * @returns `false` if a comment indicator or null character is encountered
  */
-bool SkipStringWhitespace(std::string &LineData, int &siter)
+static bool SkipStringWhitespace(std::string const &LineData, int &siter)
 {
 	while ((LineData[siter] == ' ' || LineData[siter] == '\t') && LineData[siter] != '\0' && LineData[siter] != '#')
 		siter++;
@@ -188,11 +189,12 @@ bool SkipStringWhitespace(std::string &LineData, int &siter)
 }
 
 /**
+ * @brief Reads a word from a std::string and increments a position indicator accordingly (terminates on whitespace)
  * @param LineData      Line data being parsed
  * @param siter         Current string iterator position (incremented to end of word)
  * @returns std::string containing the value read (excluding whitespace characters)
  */
-std::string ReadValue(std::string LineData, int& siter)
+static std::string ReadValue(std::string const &LineData, int& siter)
 {
 	std::string Value;
 	while (LineData[siter] != '\n' && LineData[siter] != '\t' && LineData[siter] != '#' && LineData[siter] != '\0' && LineData[siter] != ' ') {
@@ -203,10 +205,11 @@ std::string ReadValue(std::string LineData, int& siter)
 }
 
 /**
+ * @brief Parses a std::string to determine what type of information is contained (string, int, or float)
  * @param ValCheck      Vector of 3 bools indicating if (0) contains numbers, (1) contains a decimal point, (2) contains other characters that are non-numeric
  * @param VarVal        String being tested
  */
-void GetValueType(bool* ValCheck, std::string VarVal)
+static void GetValueType(bool* ValCheck, std::string const &VarVal)
 {
 	bool ExpForm = false; //Whether string is already categorized as being in exponential form
 	ValCheck[0] = false; //Contains numbers
@@ -237,6 +240,7 @@ void GetValueType(bool* ValCheck, std::string VarVal)
 }
 
 /**
+ * @brief Stores a value given by VarVal in the dictionary with key VarName
  * @param D             Dictionary object being manipulated
  * @param VarName       Variable name being added to dictionary
  * @param VarVal        Value being added (as std::string; this will be parsed internally)
@@ -246,7 +250,7 @@ void GetValueType(bool* ValCheck, std::string VarVal)
  * @returns `true` on successful addition of a value to the dictionary.
  * @returns `false` if a value was not able to be added to the dictionary.
  */
-bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG /*=false*/)
+static bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG = false)
 {
 	using std::cerr, std::endl;
 	bool ValCheck[3] {0,0,0}; //int, double, string;
@@ -281,6 +285,7 @@ bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const 
 }
 
 /**
+ * @brief Enforces the value of a string (with some limitations)
  * @param filename      Name of file being loaded
  * @param D             Dictionary where information is loaded to
  * @param siter         Current string iterator position (incremented to end of word)
@@ -289,7 +294,7 @@ bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const 
  * @returns `true` if enforced value is satisfied (or has been added to dictionary)
  * @returns `false` if enforcement is violated by a prior definition
  */
-bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVal, std::string &LineData) {
+static bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVal, std::string &LineData) {
 	siter++;
 	std::string Enforcer = VarVal;
 	std::string EnforceVal;
@@ -314,6 +319,7 @@ bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVa
 }
 
 /**
+ * @brief Handles a set of input data
  * @param filename      Name of file being loaded
  * @param BUFFER        Raw line data buffer
  * @param ln            Line number
@@ -326,7 +332,7 @@ bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVa
  * @returns `true` if line data was handled successfully
  * @returns `false` if something went wrong (outputs to std::cerr)
  */
-bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG /*=false*/) 
+static bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG = false) 
 {
 	using std::cerr, std::endl;
 	//Include handler (THIS DOES NOT DETECT RECURSION)

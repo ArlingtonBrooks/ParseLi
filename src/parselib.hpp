@@ -108,36 +108,6 @@ class Dict
 /** @} */
 
 /**
- * @brief Skips whitespace in a std::string and increments a position indicator accordingly
- */
-bool SkipStringWhitespace(std::string &LineData, int &siter);
-
-/**
- * @brief Reads a word from a std::string and increments a position indicator accordingly (terminates on whitespace)
- */
-std::string ReadValue(std::string LineData, int& siter);
-
-/**
- * @brief Parses a std::string to determine what type of information is contained (string, int, or float)
- */
-void GetValueType(bool* ValCheck, std::string VarVal);
-
-/**
- * @brief Stores a value given by VarVal in the dictionary with key VarName
- */
-bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG = false);
-
-/**
- * @brief Enforces the value of a string (with some limitations)
- */
-bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string &VarVal, std::string &LineData);
-
-/**
- * @brief Handles a set of input data
- */
-bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG = false);
-
-/**
  * @brief Reads a configuration file into a Dict pointer
 */
 bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false);
