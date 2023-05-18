@@ -15,6 +15,8 @@ int main(int argc, char** argv)
 {
 	char fname[] = "Example.in";
 	ParseLi::Dict D;
+	ParseLi::Dict AnotherTest("Example.in");
+	AnotherTest.Dump();
 	
 	ParseLi::ReadConfig(fname,&D,false);
 	D.Dump();
