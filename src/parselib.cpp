@@ -417,6 +417,8 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 	//Open file for reading
 	std::ifstream f_in(filename,std::ifstream::in);
 	if (DEBUG) cerr << "Opened " << filename << " for input" << endl;
+	D->Filename = std::string(filename);
+	f_in.close();
 	
 	return ReadConfig(f_in,D,DEBUG);
 };

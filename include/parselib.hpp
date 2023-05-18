@@ -58,6 +58,7 @@ class Dict
 	/** @brief Thread access controller */
 	mutable std::mutex DictMutex;
 	public:
+	std::string Filename = "";
 	
 	/** @brief Default constructor */
 	Dict() = default;
@@ -67,7 +68,8 @@ class Dict
 	explicit Dict(const Dict &D) : 
 		StringMap(D.StringMap),
 		DoubleMap(D.DoubleMap),
-		IntMap(D.IntMap) {}
+		IntMap(D.IntMap),
+		Filename(D.Filename) {}
 	
 	/** @brief Assignment operator */
 	Dict& operator=(const Dict &D)
@@ -80,6 +82,7 @@ class Dict
 			StringMap = D.StringMap;
 			DoubleMap = D.DoubleMap;
 			IntMap = D.IntMap;
+			Filename = D.Filename;
 		}
 		return *this;
 	}
