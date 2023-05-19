@@ -73,7 +73,11 @@ class Dict
 	
 	/** @brief Default constructor */
 	Dict() = default;
-	Dict(std::string const &Filename)
+	Dict(std::string const &Filename) : 
+		StringMap(0),
+		DoubleMap(0),
+		IntMap(0),
+		DictMutex()
 	{
 		ReadConfig(Filename.c_str(),this);
 	}
@@ -84,6 +88,7 @@ class Dict
 		StringMap(D.StringMap),
 		DoubleMap(D.DoubleMap),
 		IntMap(D.IntMap),
+		DictMutex(),
 		Filename(D.Filename) {}
 	
 	/** @brief Assignment operator */

@@ -40,6 +40,17 @@
  */
 namespace ParseLi {
 
+class Dict;
+/**
+ * @brief Reads a configuration file into a Dict pointer
+*/
+bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false);
+
+/**
+ * @brief Reads from any input stream (istream) into a Dict pointer
+*/
+bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG =false);
+
 /** @class Dict
  * @brief A class contining information loaded from a configuration file
  * 
@@ -62,6 +73,14 @@ class Dict
 	
 	/** @brief Default constructor */
 	Dict() = default;
+	Dict(std::string const &Filename) : 
+		StringMap(0),
+		DoubleMap(0),
+		IntMap(0),
+		DictMutex()
+	{
+		ReadConfig(Filename.c_str(),this);
+	}
 	~Dict() = default;
 	
 	/** @brief Copy constructor */
@@ -69,6 +88,7 @@ class Dict
 		StringMap(D.StringMap),
 		DoubleMap(D.DoubleMap),
 		IntMap(D.IntMap),
+		DictMutex(),
 		Filename(D.Filename) {}
 	
 	/** @brief Assignment operator */
@@ -113,15 +133,6 @@ class Dict
 };
 /** @} */
 
-/**
- * @brief Reads a configuration file into a Dict pointer
-*/
-bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false);
-
-/**
- * @brief Reads from any input stream (istream) into a Dict pointer
-*/
-bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG =false);
 } //namespace ParseLi
 
 #endif
