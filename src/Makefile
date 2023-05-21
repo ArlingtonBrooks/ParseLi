@@ -1,5 +1,27 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -Weffc++ -fPIC -c -O3 -std=c++17 -march=native
+WARNINGS ?= YES
+WFLAGS := 
+
+ifeq ($(WARNINGS),YES)
+	WFLAGS = -Wall
+	WFLAGS += -Wcast-align
+	WFLAGS += -Wcast-qual
+	WFLAGS += -Wlogical-op
+	WFLAGS += -Wmissing-declarations
+	WFLAGS += -Wmissing-include-dirs
+	WFLAGS += -Wpointer-arith
+	WFLAGS += -Wredundant-decls
+	WFLAGS += -Wsequence-point
+	WFLAGS += -Wshadow
+	WFLAGS += -Wswitch
+	WFLAGS += -Wundef
+	WFLAGS += -Wunreachable-code
+	WFLAGS += -Wunused-but-set-parameter
+	WFLAGS += -Wwrite-strings
+	WFLAGS += -Wdisabled-optimization
+endif
+
+CXXFLAGS=-fPIC -c -O3 -std=c++17 -march=native
 LIBFLAGS=--shared -std=c++17
 
 Target=libparselib.so
@@ -8,16 +30,18 @@ SRCS = parselib.cpp
 
 $(Target): $(SRCS)
 	mkdir -p BUILD
-	$(CXX) $(CXXFLAGS) $(SRCS) -o $(BASENAME).a
-	$(CXX) $(LIBFLAGS) -o $(BASENAME).so $(BASENAME).a
+	$(CXX) $(WFLAGS) $(CXXFLAGS) $(SRCS) -o $(BASENAME).a
+	$(CXX) $(WFLAGS) $(LIBFLAGS) -o $(BASENAME).so $(BASENAME).a
 	cp $(BASENAME).so BUILD/
 	cp $(BASENAME).a BUILD/
 
 test: test.cpp
-	$(CXX) test.cpp -o test.out
+	$(CXX) $(WFLAGS) test.cpp -o test.out
 
 clean:
 	rm -rf BUILD/
 	rm -f $(BASENAME).a
 	rm -f $(BASENAME).so
 	rm -f test.out
+	
+

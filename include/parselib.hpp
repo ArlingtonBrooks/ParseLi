@@ -69,17 +69,17 @@ class Dict
 	/** @brief Thread access controller */
 	mutable std::mutex DictMutex;
 	public:
-	std::string Filename = "";
+	std::string Filename;
 	
 	/** @brief Default constructor */
 	Dict() = default;
-	Dict(std::string const &Filename) : 
+	Dict(std::string const &Filename_) : 
 		StringMap(0),
 		DoubleMap(0),
 		IntMap(0),
 		DictMutex()
 	{
-		ReadConfig(Filename.c_str(),this);
+		ReadConfig(Filename_.c_str(),this);
 	}
 	~Dict() = default;
 	
