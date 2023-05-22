@@ -51,6 +51,11 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false);
 */
 bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG =false);
 
+/**
+ * @brief Compares two std::strings ignoring case
+ */
+bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2);
+
 /** @class Dict
  * @brief A class contining information loaded from a configuration file
  * 
