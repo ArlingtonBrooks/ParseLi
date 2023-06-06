@@ -30,11 +30,11 @@ BASENAME=libparselib
 SRCS = parselib.cpp
 
 $(Target): $(SRCS)
-	mkdir -p BUILD
+	mkdir -p BUILD/lib
 	$(CXX) $(WFLAGS) $(CXXFLAGS) $(SRCS) -o $(BASENAME).a
 	$(CXX) $(WFLAGS) $(LIBFLAGS) -o $(BASENAME).so $(BASENAME).a
-	cp $(BASENAME).so BUILD/
-	cp $(BASENAME).a BUILD/
+	cp $(BASENAME).so BUILD/lib/
+	cp $(BASENAME).a BUILD/lib/
 
 test: test.cpp
 	$(CXX) $(WFLAGS) test.cpp -o test.out
