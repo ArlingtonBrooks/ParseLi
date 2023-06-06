@@ -113,25 +113,27 @@ class Dict
 	}
 	
 	/** @brief Add a `double` to the dictionary map */
-	bool add(std::string key, double val);
+	bool add(std::string const &key, double val);
 	/** @overload bool add(std::string key, int val); */
-	bool add(std::string key, int val);
+	bool add(std::string const &key, int val);
 	/** @overload bool add(std::string key, std::string val); */
-	bool add(std::string key, std::string val);
+	bool add(std::string const &key, std::string const &val);
 
 	/** @brief Get the double corresponding to `key` */
-	double GetDouble(std::string key) const;
+	double GetDouble(std::string const &key) const;
 	/** @brief Get the int corresponding to `key` */
-	int GetInt(std::string key) const;
+	int GetInt(std::string const &key) const;
 	/** @brief Get the string corresponding to `key` */
-	std::string GetString(std::string key) const;
+	std::string GetString(std::string const &key) const;
+	/** @brief Get a boolean from strings map */
+	bool GetBool(std::string const &key) const;
 	
 	/** @brief Check if `key` exists in `double`s map */
-	bool CheckDouble(std::string key) const;
+	bool CheckDouble(std::string const &key) const;
 	/** @brief Check if `key` exists in `int`s map*/
-	bool CheckInt(std::string key) const;
+	bool CheckInt(std::string const &key) const;
 	/** @brief Check if `key` exists in `std::string`s map */
-	bool CheckString(std::string key) const;
+	bool CheckString(std::string const &key) const;
 
 	/** @brief Prints information about loaded dictionary to stdout */
 	void Dump() const;

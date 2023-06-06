@@ -42,6 +42,10 @@ int main(int argc, char** argv)
 	D2.Dump();
 	D2 = D;
 	D2.Dump();
+	if (D2.GetBool("BOOL"))
+		printf("BOOL IS TRUE\n");
+	else
+		printf("BOOL IS FALSE\n");
 	
 	//Another file input
 	ParseLi::Dict D3;

@@ -19,6 +19,7 @@ ifeq ($(WARNINGS),YES)
 	WFLAGS += -Wunused-but-set-parameter
 	WFLAGS += -Wwrite-strings
 	WFLAGS += -Wdisabled-optimization
+	WFLAGS += -Wpedantic
 endif
 
 CXXFLAGS=-fPIC -c -O3 -std=c++17 -march=native

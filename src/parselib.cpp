@@ -59,7 +59,7 @@ bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2)
  * @param val Value added with key `key`
  * @return `True` if successful, `False` otherwise
 */
-bool Dict::add(std::string Key, double value)
+bool Dict::add(std::string const &Key, double value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
 	DoubleMap.emplace(Key,value);
@@ -67,7 +67,7 @@ bool Dict::add(std::string Key, double value)
 }
 
 //integer overload for Dict::add
-bool Dict::add(std::string Key, int value)
+bool Dict::add(std::string const &Key, int value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
 	IntMap.emplace(Key,value);
@@ -75,7 +75,7 @@ bool Dict::add(std::string Key, int value)
 }
 
 //std::string overload for Dict::add
-bool Dict::add(std::string Key, std::string value)
+bool Dict::add(std::string const &Key, std::string const &value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
 	StringMap.emplace(Key,value);
@@ -87,7 +87,7 @@ bool Dict::add(std::string Key, std::string value)
  * @return Value corresponding to `key`
  * @throw std::out_of_range if value cannot be found
 */
-double Dict::GetDouble(std::string key) const
+double Dict::GetDouble(std::string const &key) const
 {
 	double ret;
 	try {
@@ -105,7 +105,7 @@ double Dict::GetDouble(std::string key) const
  * @return Value corresponding to `key`
  * @throw std::out_of_range if value cannot be found
 */
-int Dict::GetInt(std::string key) const
+int Dict::GetInt(std::string const &key) const
 {
 	int ret;
 	try {
@@ -123,7 +123,7 @@ int Dict::GetInt(std::string key) const
  * @return Value corresponding to `key`
  * @throw std::out_of_range if value cannot be found
 */
-std::string Dict::GetString(std::string key) const
+std::string Dict::GetString(std::string const &key) const
 {
 	std::string ret;
 	try {
@@ -136,11 +136,54 @@ std::string Dict::GetString(std::string key) const
 	return ret;
 }
 
+/** @brief Checks if a string contains the word 'true' or 'false'
+ * @param value    Value to test
+ * @returns true if value is 'true'
+ * @returns false if value is 'false'
+ * @throws std::runtime_error if value is not 'true' or 'false'
+ */
+static bool CheckIfStringTrueOrFalse(const std::string &value)
+{
+	if (value.length() == 4) {
+		if (std::tolower(value[0]) == 't' &&
+		    std::tolower(value[1]) == 'r' &&
+		    std::tolower(value[2]) == 'u' &&
+		    std::tolower(value[3]) == 'e') return true;
+	} else if (value.length() == 5) {
+		if (std::tolower(value[0]) == 'f' &&
+		    std::tolower(value[1]) == 'a' &&
+		    std::tolower(value[2]) == 'l' &&
+		    std::tolower(value[3]) == 's' &&
+		    std::tolower(value[4]) == 'e') return false;
+	}
+	throw std::runtime_error("Unable to convert string to bool");
+}
+
+/**
+ * @param key Value to look up
+ * @return true if string at `key` is "true"
+ * @return false if string at `key` is "false"
+ * @throw std::out_of_range if value cannot be found
+ * @throw std::runtime_error if value is neither true or false
+ */
+bool Dict::GetBool(std::string const &key) const
+{
+	bool ret;
+	try {
+		std::lock_guard<std::mutex> lock(DictMutex);
+		ret = CheckIfStringTrueOrFalse(StringMap.at(key));
+	} catch (const std::out_of_range& e) {
+		std::cerr << "Value \"" << key << "\" out of range of string map (maybe this isn't a string?)" << std::endl;
+		throw;
+	}
+	return ret;
+}
+
 /**
  * @param key Value to look up
  * @return `True` if `key` exists, `False` otherwise
 */
-bool Dict::CheckDouble(std::string key) const
+bool Dict::CheckDouble(std::string const &key) const
 {
 	if (DoubleMap.find(key) == DoubleMap.end())
 		return false;
@@ -151,7 +194,7 @@ bool Dict::CheckDouble(std::string key) const
  * @param key Value to look up
  * @return `True` if `key` exists, `False` otherwise
 */
-bool Dict::CheckInt(std::string key) const
+bool Dict::CheckInt(std::string const &key) const
 {
 	if (IntMap.find(key) == IntMap.end())
 		return false;
@@ -162,7 +205,7 @@ bool Dict::CheckInt(std::string key) const
  * @param key Value to look up
  * @return `True` if `key` exists, `False` otherwise
 */
-bool Dict::CheckString(std::string key) const
+bool Dict::CheckString(std::string const &key) const
 {
 	if (StringMap.find(key) == StringMap.end())
 		return false;
@@ -275,7 +318,7 @@ static void GetValueType(bool* ValCheck, std::string const &VarVal)
  * @returns `true` on successful addition of a value to the dictionary.
  * @returns `false` if a value was not able to be added to the dictionary.
  */
-static bool StoreValue(Dict* D, std::string VarName, std::string VarVal, int ln, const char* BUFFER, bool DEBUG = false)
+static bool StoreValue(Dict* D, std::string VarName, std::string const &VarVal, int ln, const char* BUFFER, bool DEBUG = false)
 {
 	using std::cerr, std::endl;
 	bool ValCheck[3] {0,0,0}; //int, double, string;
