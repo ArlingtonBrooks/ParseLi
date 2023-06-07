@@ -34,27 +34,6 @@
 namespace ParseLi {
 
 /**
- * This function is provided to help make string comparisons easier
- * @param S1      Reference to constant string to be compared
- * @param S2      Reference to constant string to be compared
- * @returns true if strings are equal (ignoring case)
- * @returns false otherwise
- * @note This should be reasonably fast, but in the worst case will produce a
- * compute time on the order of the two string lengths.
- */
-bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2)
-{
-	if (S1.length() == S2.length()) {
-		for (unsigned i = 0; i < S1.length(); i++) 
-			if (std::tolower(S1[i]) != std::tolower(S2[i])) return false;
-	} else {
-		return false;
-	}
-	
-	return true;
-}
-
-/**
  * @param key Lookup value corresponding to `val`
  * @param val Value added with key `key`
  * @return `True` if successful, `False` otherwise
