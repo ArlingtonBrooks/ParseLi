@@ -32,7 +32,7 @@
 #include "parselib.hpp" //Dict
 
 namespace ParseLi {
-
+inline namespace V_0_0_1 {
 /**
  * @param key Lookup value corresponding to `val`
  * @param val Value added with key `key`
@@ -531,6 +531,7 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 	return true;
 };
 
+} //V_0_0_1
 } //namespace ParseLi
 
 #endif

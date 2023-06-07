@@ -39,7 +39,7 @@
  * @brief The namespace encompassing the ParseLi functions
  */
 namespace ParseLi {
-
+inline namespace V_0_0_1 {
 class Dict;
 /**
  * @brief Reads a configuration file into a Dict pointer
@@ -135,6 +135,7 @@ class Dict
 };
 /** @} */
 
+} //namespace V_0_0_1
 } //namespace ParseLi
 
 #endif
