@@ -39,6 +39,12 @@
  * @brief The namespace encompassing the ParseLi functions
  */
 namespace ParseLi {
+
+/**
+ * @brief Compares two std::strings ignoring case
+ */
+bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2);
+
 inline namespace V_0_0_2 {
 class Dict;
 /**
