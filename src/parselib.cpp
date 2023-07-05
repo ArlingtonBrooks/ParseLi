@@ -41,24 +41,21 @@ inline namespace V_0_0_1 {
 bool Dict::add(std::string const &Key, double value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
-	DoubleMap.emplace(Key,value);
-	return true;
+	return DoubleMap.emplace(Key,value).second;
 }
 
 //integer overload for Dict::add
 bool Dict::add(std::string const &Key, int value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
-	IntMap.emplace(Key,value);
-	return true;
+	return IntMap.emplace(Key,value).second;
 }
 
 //std::string overload for Dict::add
 bool Dict::add(std::string const &Key, std::string const &value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
-	StringMap.emplace(Key,value);
-	return true;
+	return StringMap.emplace(Key,value).second;
 }
 
 /**

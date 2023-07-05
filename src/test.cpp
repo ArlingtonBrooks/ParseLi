@@ -46,7 +46,13 @@ int main(int argc, char** argv)
 		printf("BOOL IS TRUE\n");
 	else
 		printf("BOOL IS FALSE\n");
-	
+	printf("Attempting to add an already-present value:");
+	int j = D2.add("BOOL","true");
+	printf(" %d\n",j);
+	if (D2.GetBool("BOOL"))
+		printf("BOOL IS TRUE\n");
+	else
+		printf("BOOL IS FALSE\n");
 	//Another file input
 	ParseLi::Dict D3;
 	std::ifstream I1("Example.in");
