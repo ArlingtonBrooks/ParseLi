@@ -39,7 +39,7 @@
  * @brief The namespace encompassing the ParseLi functions
  */
 namespace ParseLi {
-inline namespace V_0_0_1 {
+inline namespace V_0_0_2 {
 class Dict;
 /**
  * @brief Reads a configuration file into a Dict pointer
@@ -113,6 +113,13 @@ class Dict
 	bool add(std::string const &key, int val);
 	/** @overload bool add(std::string key, std::string val); */
 	bool add(std::string const &key, std::string const &val);
+
+	/** @brief Add a `double` to the dictionary map, overwrite if it already exists */
+	void set(std::string const &key, double val);
+	/** @overload bool add(std::string key, int val); */
+	void set(std::string const &key, int val);
+	/** @overload bool add(std::string key, std::string val); */
+	void set(std::string const &key, std::string const &val);
 
 	/** @brief Get the double corresponding to `key` */
 	double GetDouble(std::string const &key) const;

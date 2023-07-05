@@ -32,7 +32,7 @@
 #include "parselib.hpp" //Dict
 
 namespace ParseLi {
-inline namespace V_0_0_1 {
+inline namespace V_0_0_2 {
 /**
  * @param key Lookup value corresponding to `val`
  * @param val Value added with key `key`
@@ -56,6 +56,30 @@ bool Dict::add(std::string const &Key, std::string const &value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
 	return StringMap.emplace(Key,value).second;
+}
+
+/**
+ * @param key Lookup value corresponding to `val`
+ * @param val Value set with key `key`
+*/
+void Dict::set(std::string const &Key, double value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	DoubleMap[Key] = value;
+}
+
+//integer overload for Dict::set
+void Dict::set(std::string const &Key, int value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	IntMap[Key] = value;
+}
+
+//std::string overload for Dict::set
+void Dict::set(std::string const &Key, std::string const &value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	StringMap[Key] = value;
 }
 
 /**

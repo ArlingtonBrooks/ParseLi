@@ -46,13 +46,16 @@ int main(int argc, char** argv)
 		printf("BOOL IS TRUE\n");
 	else
 		printf("BOOL IS FALSE\n");
-	printf("Attempting to add an already-present value:");
-	int j = D2.add("BOOL","true");
-	printf(" %d\n",j);
+	printf("Attempting to add an already-present value\n");
+	D2.set("BOOL","true");
 	if (D2.GetBool("BOOL"))
 		printf("BOOL IS TRUE\n");
 	else
 		printf("BOOL IS FALSE\n");
+	D2.set("ITOL",2.5);
+	printf("Float set to %f\n",D2.GetDouble("ITOL"));
+	D2.set("MODE",5);
+	printf("Int set to %d\n",D2.GetInt("MODE"));
 	//Another file input
 	ParseLi::Dict D3;
 	std::ifstream I1("Example.in");
