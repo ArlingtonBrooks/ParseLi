@@ -32,28 +32,7 @@
 #include "parselib.hpp" //Dict
 
 namespace ParseLi {
-
-/**
- * This function is provided to help make string comparisons easier
- * @param S1      Reference to constant string to be compared
- * @param S2      Reference to constant string to be compared
- * @returns true if strings are equal (ignoring case)
- * @returns false otherwise
- * @note This should be reasonably fast, but in the worst case will produce a
- * compute time on the order of the two string lengths.
- */
-bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2)
-{
-	if (S1.length() == S2.length()) {
-		for (unsigned i = 0; i < S1.length(); i++) 
-			if (std::tolower(S1[i]) != std::tolower(S2[i])) return false;
-	} else {
-		return false;
-	}
-	
-	return true;
-}
-
+inline namespace V_0_0_2 {
 /**
  * @param key Lookup value corresponding to `val`
  * @param val Value added with key `key`
@@ -62,24 +41,45 @@ bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2)
 bool Dict::add(std::string const &Key, double value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
-	DoubleMap.emplace(Key,value);
-	return true;
+	return DoubleMap.emplace(Key,value).second;
 }
 
 //integer overload for Dict::add
 bool Dict::add(std::string const &Key, int value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
-	IntMap.emplace(Key,value);
-	return true;
+	return IntMap.emplace(Key,value).second;
 }
 
 //std::string overload for Dict::add
 bool Dict::add(std::string const &Key, std::string const &value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
-	StringMap.emplace(Key,value);
-	return true;
+	return StringMap.emplace(Key,value).second;
+}
+
+/**
+ * @param key Lookup value corresponding to `val`
+ * @param val Value set with key `key`
+*/
+void Dict::set(std::string const &Key, double value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	DoubleMap[Key] = value;
+}
+
+//integer overload for Dict::set
+void Dict::set(std::string const &Key, int value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	IntMap[Key] = value;
+}
+
+//std::string overload for Dict::set
+void Dict::set(std::string const &Key, std::string const &value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	StringMap[Key] = value;
 }
 
 /**
@@ -552,6 +552,7 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 	return true;
 };
 
+} //V_0_0_1
 } //namespace ParseLi
 
 #endif
