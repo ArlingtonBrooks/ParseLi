@@ -45,17 +45,17 @@ namespace ParseLi {
  */
 bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2);
 
-inline namespace V_0_0_2 {
+inline namespace V_0_0_4 {
 class Dict;
 /**
  * @brief Reads a configuration file into a Dict pointer
 */
-bool ReadConfig(const char* filename, Dict* D, bool DEBUG = false);
+bool ReadConfig(const char* filename, Dict* D, bool Debug = false);
 
 /**
  * @brief Reads from any input stream (istream) into a Dict pointer
 */
-bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG =false);
+bool ReadConfig(std::istream &f_in, Dict* D, bool Debug =false);
 
 /** @class Dict
  * @brief A class contining information loaded from a configuration file
@@ -127,6 +127,13 @@ class Dict
 	/** @overload bool add(std::string key, std::string val); */
 	void set(std::string const &key, std::string const &val);
 
+	/** @brief Add a `double` to the dictionary map, overwrite if it already exists */
+	void try_set(std::string const &key, double val);
+	/** @overload bool add(std::string key, int val); */
+	void try_set(std::string const &key, int val);
+	/** @overload bool add(std::string key, std::string val); */
+	void try_set(std::string const &key, std::string const &val);
+
 	/** @brief Get the double corresponding to `key` */
 	double GetDouble(std::string const &key) const;
 	/** @brief Get the int corresponding to `key` */
@@ -148,7 +155,7 @@ class Dict
 };
 /** @} */
 
-} //namespace V_0_0_1
+} //namespace Version
 } //namespace ParseLi
 
 #endif

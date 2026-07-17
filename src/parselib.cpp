@@ -54,7 +54,7 @@ bool StringsEqualIgnoreCase(std::string const &S1, std::string const &S2)
 	return true;
 }
 
-inline namespace V_0_0_2 {
+inline namespace V_0_0_4 {
 /**
  * @param key Lookup value corresponding to `val`
  * @param val Value added with key `key`
@@ -102,6 +102,33 @@ void Dict::set(std::string const &Key, std::string const &value)
 {
 	std::lock_guard<std::mutex> lock(DictMutex);
 	StringMap[Key] = value;
+}
+
+/**
+ * @param key Lookup value corresponding to `val`
+ * @param val Value set with key `key`
+*/
+void Dict::try_set(std::string const &Key, double value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	if (!CheckDouble(Key))
+		DoubleMap[Key] = value;
+}
+
+//integer overload for Dict::try_set
+void Dict::try_set(std::string const &Key, int value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	if (!CheckInt(Key))
+		IntMap[Key] = value;
+}
+
+//std::string overload for Dict::try_set
+void Dict::try_set(std::string const &Key, std::string const &value)
+{
+	std::lock_guard<std::mutex> lock(DictMutex);
+	if (!CheckString(Key))
+		StringMap[Key] = value;
 }
 
 /**
@@ -335,41 +362,41 @@ static void GetValueType(bool* ValCheck, std::string const &VarVal)
  * @param VarName       Variable name being added to dictionary
  * @param VarVal        Value being added (as std::string; this will be parsed internally)
  * @param ln            Line number (for error handling)
- * @param BUFFER        Character array containing line data (for error handling)
- * @param DEBUG         Error handling flag
+ * @param Buffer        Character array containing line data (for error handling)
+ * @param Debug         Error handling flag
  * @returns `true` on successful addition of a value to the dictionary.
  * @returns `false` if a value was not able to be added to the dictionary.
  */
-static bool StoreValue(Dict* D, std::string VarName, std::string const &VarVal, int ln, const char* BUFFER, bool DEBUG = false)
+static bool StoreValue(Dict* D, std::string VarName, std::string const &VarVal, int ln, const char* Buffer, bool Debug = false)
 {
 	using std::cerr, std::endl;
 	bool ValCheck[3] {0,0,0}; //int, double, string;
 	GetValueType(ValCheck,VarVal);
 	if (ValCheck[2]) { //String add
 		D->add(VarName,VarVal);
-		if (DEBUG) cerr << "String added: " << VarName << ": " << VarVal << endl;
+		if (Debug) cerr << "String added: " << VarName << ": " << VarVal << endl;
 	} else if (ValCheck[1]) { //(double) float add
 		try {D->add(VarName,std::stod(VarVal.c_str()));}
 		catch (const std::invalid_argument &e) {
 			cerr << "Failed to parse double " << VarVal << " on line " << ln << ":" << endl;
-			cerr << BUFFER << endl;
+			cerr << Buffer << endl;
 			return false;
 		} catch (const std::out_of_range &e) {
 			cerr << "Double " << VarVal << " on line " << ln << " is out of range." << endl;
 			return false;
 		}
-		if (DEBUG) cerr << "Float added: " << VarName << ": " << VarVal << endl;
+		if (Debug) cerr << "Float added: " << VarName << ": " << VarVal << endl;
 	} else if (ValCheck[0]) { //int add
 		try {D->add(VarName,std::stoi(VarVal.c_str()));}
 		catch (const std::invalid_argument &e) {
 			cerr << "Failed to parse int " << VarVal << " on line " << ln << ":" << endl;
-			cerr << BUFFER << endl;
+			cerr << Buffer << endl;
 			return false;
 		} catch (const std::out_of_range &e) {
 			cerr << "Int " << VarVal << " on line " << ln << " is out of range." << endl;
 			return false;
 		}
-		if (DEBUG) cerr << "Int added: " << VarName << ": " << VarVal << endl;
+		if (Debug) cerr << "Int added: " << VarName << ": " << VarVal << endl;
 	}
 	return true;
 }
@@ -411,18 +438,18 @@ static bool ValueEnforcer(const char* filename, Dict* D, int &siter, std::string
 /**
  * @brief Handles a set of input data
  * @param filename      Name of file being loaded
- * @param BUFFER        Raw line data buffer
+ * @param Buffer        Raw line data buffer
  * @param ln            Line number
  * @param D             Dictionary where information is loaded to
  * @param siter         Current string iterator position (incremented to end of word)
  * @param VarName       Name of variable being handled
  * @param VarVal        Value of variable being handled
  * @param LineData      Current line being parsed
- * @param DEBUG         Whether to print debug info
+ * @param Debug         Whether to print debug info
  * @returns `true` if line data was handled successfully
  * @returns `false` if something went wrong (outputs to std::cerr)
  */
-static bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool DEBUG = false) 
+static bool ValueHandler(const char* filename, const char* Buffer, int &ln, Dict* D, int &siter, std::string &VarName, std::string &VarVal, std::string &LineData, bool Debug = false) 
 {
 	using std::cerr, std::endl;
 	//Include handler (THIS DOES NOT DETECT RECURSION)
@@ -432,7 +459,7 @@ static bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict
 			cerr << "Error in file include: Filename " << VarVal << " cannot include itself (line " << ln << ")" << endl;
 			return true;
 		}
-		ReadConfig(VarVal.c_str(),D,DEBUG);
+		ReadConfig(VarVal.c_str(),D,Debug);
 		return true;
 	} 
 	//Warning handler
@@ -451,7 +478,7 @@ static bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict
 			return false;
 	}
 	//Store in dictionary
-	if (!StoreValue(D,VarName,VarVal,ln,BUFFER,DEBUG))
+	if (!StoreValue(D,VarName,VarVal,ln,Buffer,Debug))
 		return false;
 	
 	return true;
@@ -460,7 +487,7 @@ static bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict
 /**
  * @param filename      Name of the configuration file to read
  * @param D             Dictionary where information is loaded to
- * @param DEBUG         Whether to print debugging information
+ * @param Debug         Whether to print debugging information
  * @return `True` on successful read of config file
  * @return `False` if an error occurs, with accompanying output to stdout
  *
@@ -492,7 +519,7 @@ static bool ValueHandler(const char* filename, const char* BUFFER, int &ln, Dict
 		MAXITER 100000; #This is stored as an integer
  * @endcode
 */
-bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
+bool ReadConfig(const char* filename, Dict* D, bool Debug /*=false*/)
 {
 	using std::cerr, std::endl;
 	//Check file exists (old C-way)
@@ -502,9 +529,9 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 
 	//Open file for reading
 	std::ifstream f_in(filename,std::ifstream::in);
-	if (DEBUG) cerr << "Opened " << filename << " for input" << endl;
+	if (Debug) cerr << "Opened " << filename << " for input" << endl;
 	
-	bool ret = ReadConfig(f_in,D,DEBUG);
+	bool ret = ReadConfig(f_in,D,Debug);
 	D->Filename = std::string(filename);
 	
 	f_in.close();
@@ -514,19 +541,19 @@ bool ReadConfig(const char* filename, Dict* D, bool DEBUG /*=false*/)
 /**
  * @param f_in          Generic stream file input
  * @param D             Dictionary where information is loaded to
- * @param DEBUG         Whether to print debugging information
+ * @param Debug         Whether to print debugging information
  * @return `True` on successful read of config
  * @return `False` if an error occurs, with accompanying output to stdout
 */
-bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
+bool ReadConfig(std::istream &f_in, Dict* D, bool Debug /*=false*/)
 {
 	using std::cerr, std::endl;
 	f_in.seekg(0,f_in.beg);
 	const char* filename = "(streamed input)";
-	char BUFFER[512];
+	char Buffer[512];
 
 	int ln{0};
-	if (DEBUG) cerr << "Opened " << filename << " for input" << endl;
+	if (Debug) cerr << "Opened " << filename << " for input" << endl;
 
 	while (f_in) {
 		std::string VarName;
@@ -534,27 +561,27 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 		int siter {0}; //string iter
 		ln += 1;
 		//Read line from buffer;
-		f_in.getline(BUFFER,512);
+		f_in.getline(Buffer,512);
 
 		//Return if file failed to read;
 		if (f_in.fail() && !f_in.eof()) {
 			cerr << "An error occurred while reading " << filename << ".  Failed to load." << endl;
-			cerr << "Characters in buffer: " << endl << BUFFER << endl;
+			cerr << "Characters in buffer: " << endl << Buffer << endl;
 			return false;
 		}
 		if (f_in.eof())
 			break;
 
-		if (DEBUG) cerr << "(" << ln << "): " << BUFFER << endl;
+		if (Debug) cerr << "(" << ln << "): " << Buffer << endl;
 
-		std::string LineData = std::string(BUFFER);
+		std::string LineData = std::string(Buffer);
 		if (!SkipStringWhitespace(LineData,siter))
 			continue;
 
 		//Read variable name
 		VarName = ReadValue(LineData,siter);
 		if (VarName.compare("BREAK") == 0) { //Stop reading on break signal
-			if (DEBUG) cerr << "Encountered \"BREAK\" signal.  Terminating input." << endl;
+			if (Debug) cerr << "Encountered \"BREAK\" signal.  Terminating input." << endl;
 			break;
 		}
 		if (VarName.length() < 1)
@@ -567,14 +594,14 @@ bool ReadConfig(std::istream &f_in, Dict* D, bool DEBUG /*=false*/)
 		}
 		VarVal = ReadValue(LineData,siter);
 		
-		if (!ValueHandler(filename, BUFFER, ln, D, siter, VarName, VarVal, LineData, DEBUG))
+		if (!ValueHandler(filename, Buffer, ln, D, siter, VarName, VarVal, LineData, Debug))
 			return false;
 	}
-	if (DEBUG) cerr << "Completed parsing (streamed input)" << endl;
+	if (Debug) cerr << "Completed parsing (streamed input)" << endl;
 	return true;
 };
 
-} //V_0_0_1
+} //Version
 } //namespace ParseLi
 
 #endif
